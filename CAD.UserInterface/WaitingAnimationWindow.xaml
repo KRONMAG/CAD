@@ -1,0 +1,21 @@
+﻿<controls:MetroWindow
+    x:Class="CAD.UserInterface.WaitingAnimationWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    IsWindowDraggable="False"
+    ResizeMode="NoResize"
+    ShowCloseButton="False"
+    ShowInTaskbar="False"
+    ShowTitleBar="False"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterOwner"
+    WindowStyle="None">
+    <StackPanel Margin="5" Orientation="Horizontal">
+        <controls:ProgressRing Width="25" Height="25" />
+        <Label
+            x:Name="MessageLabel"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Center" />
+    </StackPanel>
+</controls:MetroWindow>
