@@ -14,7 +14,7 @@ namespace CAD.Presentation.Views
         /// <summary>
         /// Событие запроса компоновки элементов
         /// </summary>
-        event EventHandler<ArrangeElementsEventArgs> ArrangeElements;
+        event EventHandler<LayoutSchemaElementEventArgs> LayoutSchemaElements;
 
         /// <summary>
         /// Отображение текстового представления схемы

@@ -22,7 +22,7 @@ namespace CAD.Presentation.Presenters
         public SchemaPresenter(ApplicationController controller, ISchemaView view) :
             base(controller, view)
         {
-            view.ArrangeElements += ArrangeElements;
+            view.LayoutSchemaElements += ArrangeElements;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace CAD.Presentation.Presenters
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="args">Параметры события</param>
-        private void ArrangeElements(object sender, ArrangeElementsEventArgs args)
+        private void ArrangeElements(object sender, LayoutSchemaElementEventArgs args)
         {
             Requires.NotNull(sender, nameof(sender));
             Requires.NotNull(args, nameof(args));

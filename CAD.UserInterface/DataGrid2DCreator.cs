@@ -24,22 +24,21 @@ namespace CAD.UserInterface
         public static DataGrid Create<TRowLabel, TColumnLabel, TElement>(LabeledMatrix<TRowLabel, TColumnLabel, TElement> matrix)
         {
             var dataGrid = new DataGrid();
+            dataGrid.IsReadOnly = true;
             dataGrid.CanUserAddRows = false;
             dataGrid.HeadersVisibility = DataGridHeadersVisibility.All;
             dataGrid.SetRowHeadersSource(GetHeaders(matrix.RowLabels));
             dataGrid.SetColumnHeadersSource(GetHeaders(matrix.ColumnLabels));
             dataGrid.SetArray2D(matrix);
-            dataGrid.SetTemplate
+            dataGrid.Resources.Add
             (
-                (DataTemplate)XamlReader.Parse
+                typeof(DataGridCell),
+                (Style)XamlReader.Parse
                 (
-                    @"<DataTemplate 
-                        xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""
-                        xmlns:mahapps=""http://metro.mahapps.com/winfx/xaml/controls""> 
-                        <TextBlock
-                            Text=""{Binding .}""
-                            TextAlignment=""Center""/>
-                    </DataTemplate>"
+                    @"<Style TargetType=""DataGridCell""
+                        xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"">
+                        <Setter Property=""TextBlock.TextAlignment"" Value=""Center""/>
+                      </Style>"
                 )
             );
             return dataGrid;

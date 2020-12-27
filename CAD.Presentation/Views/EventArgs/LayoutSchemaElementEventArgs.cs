@@ -3,7 +3,7 @@
     /// <summary>
     /// Параметры события запроса компоновки элементов
     /// </summary>
-    public class ArrangeElementsEventArgs
+    public class LayoutSchemaElementEventArgs
     {
         /// <summary>
         /// Количество узлов, по которым надо распределить элементы
@@ -14,7 +14,7 @@
         /// Создание экземпляра класса
         /// </summary>
         /// <param name="nodesCount">Количество узлов, по которым надо распределить элементы</param>
-        public ArrangeElementsEventArgs(int nodesCount)
+        public LayoutSchemaElementEventArgs(int nodesCount)
         {
             NodesCount = nodesCount;
         }

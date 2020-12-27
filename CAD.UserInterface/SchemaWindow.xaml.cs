@@ -16,7 +16,7 @@ namespace CAD.UserInterface
         /// <summary>
         /// Событие запроса компоновки элементов
         /// </summary>
-        public event EventHandler<ArrangeElementsEventArgs> ArrangeElements;
+        public event EventHandler<LayoutSchemaElementEventArgs> LayoutSchemaElements;
 
         /// <summary>
         /// Инициализация окна
@@ -80,10 +80,10 @@ namespace CAD.UserInterface
         /// <param name="sender">Источник события</param>
         /// <param name="e">Параметры события</param>
         private void ArrangeElementsClick(object sender, RoutedEventArgs e) =>
-            ArrangeElements?.Invoke
+            LayoutSchemaElements?.Invoke
             (
                 this,
-                new ArrangeElementsEventArgs((int)NodesCountNumericUpDown.Value)
+                new LayoutSchemaElementEventArgs((int)NodesCountNumericUpDown.Value)
             );
     }
 }
