@@ -44,9 +44,8 @@ namespace CAD.DomainModel.Schema
         }
 
         /// <summary>
-        /// Создание матрицы соединений схемы соединений
+        /// Матрица соединений коммутационной схемы
         /// </summary>
-        /// <returns>Матрица соединений</returns>
         public LabeledMatrix<Element, Element, int> MatrixOfConnections
         {
             get
@@ -62,6 +61,44 @@ namespace CAD.DomainModel.Schema
                                     _matrixOfConnections[chain.Elements[i], chain.Elements[j]] += 1;
                 }
                 return _matrixOfConnections;
+            }
+        }
+
+        /// <summary>
+        /// Распределение элементов схемы по узлам
+        /// </summary>
+        public LabeledMatrix<Element, string, int> ElementsDistribution
+        {
+            get
+            {
+                const string columnLabel = "Номер узла";
+                var distribution = new LabeledMatrix<Element, string, int>
+                (
+                    Elements,
+                    new[] { columnLabel }
+                );
+                Elements
+                    .ToList()
+                    .ForEach(element => distribution[element, columnLabel] = element.NodeId);
+                return distribution;
+            }
+        }
+
+        /// <summary>
+        /// Количество межузловых соединений
+        /// </summary>
+        public int InternodeConnectionsCount
+        {
+            get
+            {
+                var internodeConnectionsCount = 0;
+
+                for (var i = 0; i < Elements.Count; i++)
+                    for (var j = 0; j < i; j++)
+                        if (Elements[i].NodeId != Elements[j].NodeId)
+                            internodeConnectionsCount += MatrixOfConnections[Elements[i], Elements[j]];
+
+                return internodeConnectionsCount;
             }
         }
 
@@ -103,21 +140,5 @@ namespace CAD.DomainModel.Schema
                     )
                 )
             );
-
-        /// <summary>
-        /// Вычисление количества межузловых соединений
-        /// </summary>
-        /// <returns>Количество межузловых соединений</returns>
-        public int GetInternodeConnectionsCount()
-        {
-            var internodeConnectionsCount = 0;
-
-            for (var i = 0; i < Elements.Count; i++)
-                for (var j = 0; j < i; j++)
-                    if (Elements[i].NodeId != Elements[j].NodeId)
-                        internodeConnectionsCount += MatrixOfConnections[Elements[i], Elements[j]];
-
-            return internodeConnectionsCount;
-        }
     }
 }

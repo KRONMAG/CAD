@@ -2,19 +2,17 @@
 using CAD.DomainModel.Graph;
 using CAD.DomainModel.Schema;
 using CAD.Presentation.Common;
-using CAD.Presentation.Views.EventArgs;
 
 namespace CAD.Presentation.Views
 {
     /// <summary>
     /// Описание представления отображения схемы соединений
     /// </summary>
-    public interface ISchemaView : IView
+    public interface IShowSchemaView : IView
     {
-        /// <summary>
-        /// Событие запроса компоновки элементов
-        /// </summary>
-        event EventHandler<LayoutSchemaElementEventArgs> LayoutSchemaElements;
+        event EventHandler GoToSchemaLoadView;
+
+        event EventHandler GoToLayoutElementsView;
 
         /// <summary>
         /// Отображение текстового представления схемы
@@ -25,7 +23,7 @@ namespace CAD.Presentation.Views
         /// <summary>
         /// Отображение матрицы комплексов схемы
         /// </summary>
-        /// <param name="matrix">Матрица комплесков схемы</param>
+        /// <param name="matrix">Матрица комплексов схемы</param>
         void ShowMatrixOfComplexes(LabeledMatrix<Element, Chain, int> matrix);
 
         /// <summary>
@@ -45,5 +43,7 @@ namespace CAD.Presentation.Views
         /// </summary>
         /// <param name="count">Количество межузловых соединений</param>
         void ShowInternodeConnectionsCount(int count);
+
+        void ShowElementsDistribution(LabeledMatrix<Element, string, int> dictribution);
     }
 }

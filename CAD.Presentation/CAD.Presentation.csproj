@@ -66,14 +66,17 @@
     <Compile Include="Common\BasePresenter.cs" />
     <Compile Include="Common\IPresenter.cs" />
     <Compile Include="Common\IView.cs" />
-    <Compile Include="Common\Worker.cs" />
-    <Compile Include="Presenters\MainPresenter.cs" />
-    <Compile Include="Presenters\SchemaPresenter.cs" />
+    <Compile Include="Common\IPresenterEvent.cs" />
+    <Compile Include="Presenters\LayoutAlgoritmPresenter.cs" />
+    <Compile Include="Presenters\LoadSchemaPresenter.cs" />
+    <Compile Include="Presenters\SchemaLoadedEvent.cs" />
+    <Compile Include="Presenters\ShowSchemaPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\EventArgs\LayoutSchemaElementEventArgs.cs" />
+    <Compile Include="Views\EventArgs\RunLayoutAlgorithmEventArgs.cs" />
     <Compile Include="Views\EventArgs\LoadSchemaEventArgs.cs" />
-    <Compile Include="Views\IMainView.cs" />
-    <Compile Include="Views\ISchemaView.cs" />
+    <Compile Include="Views\ILayoutAlgorithmView.cs" />
+    <Compile Include="Views\ILoadSchemaView.cs" />
+    <Compile Include="Views\IShowSchemaView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

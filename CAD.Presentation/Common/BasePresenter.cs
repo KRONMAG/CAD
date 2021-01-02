@@ -37,6 +37,9 @@ namespace CAD.Presentation.Common
         /// </summary>
         public virtual void Run() =>
             view.Show();
+
+        ~BasePresenter() =>
+            controller.Unsubscribe(this);
     }
 
     /// <summary>
@@ -85,5 +88,8 @@ namespace CAD.Presentation.Common
             this.parameter = parameter;
             view.Show();
         }
+
+        ~BasePresenter() =>
+            controller.Unsubscribe(this);
     }
 }

@@ -58,7 +58,8 @@ namespace CAD.UserInterface
             Requires.NotNullOrEmpty(title, nameof(title));
             Requires.NotNullOrEmpty(message, nameof(message));
 
-            DialogManager.ShowModalMessageExternal(this, title, message);
+            Dispatcher.Invoke(() =>
+                DialogManager.ShowMessageAsync(this, title, message));
         }
     }
 }

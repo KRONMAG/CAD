@@ -13,10 +13,13 @@ namespace CAD.UserInterface
         /// <summary>
         /// Запуск приложения
         /// </summary>
-        public App() =>
+        public App()
+        {
             new ApplicationController()
-                .Register<IMainView, MainWindow>()
-                .Register<ISchemaView, SchemaWindow>()
-                .Run<MainPresenter>();
+                .RegisterSingleton<IShowSchemaView, ShowSchemaWindow>()
+                .Register<ILoadSchemaView, LoadSchemaWindow>()
+                .Register<ILayoutAlgorithmView, LayoutAlgorithmWindow>()
+                .Run<ShowSchemaPresenter>();
+        }
     }
 }

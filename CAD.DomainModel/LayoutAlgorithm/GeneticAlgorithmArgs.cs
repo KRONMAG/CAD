@@ -1,4 +1,5 @@
-﻿using CodeContracts;
+﻿using System.Threading;
+using CodeContracts;
 
 namespace CAD.DomainModel.LayoutAlgorithm
 {
@@ -37,6 +38,10 @@ namespace CAD.DomainModel.LayoutAlgorithm
         /// </summary>
         public SelectionType Selection { get; }
 
+        public bool RunAsynchronously { get; }
+
+        public CancellationToken? CancellationToken { get; }
+
         /// <summary>
         /// Создание экземпляра класса
         /// </summary>
@@ -46,13 +51,17 @@ namespace CAD.DomainModel.LayoutAlgorithm
         /// <param name="populationSize">Размер популяции</param>
         /// <param name="parentSelection">Тип оператора выбора родителей</param>
         /// <param name="selection">Тип оператора селекции</param>
+        /// <param name="runAsynchronously">Требуется ли асинхронное выполнение алгоритма</param>
+        /// <param name="cancellationToken">Токен отмены асинхронного выполнения алгоритма</param>
         public GeneticAlgorithmArgs
             (Schema.Schema schema,
             int nodesCount,
             int generationsCount,
             int populationSize,
             ParentSelectionType parentSelection,
-            SelectionType selection)
+            SelectionType selection,
+            bool runAsynchronously = false,
+            CancellationToken? cancellationToken = null)
         {
             Requires.NotNull(schema, nameof(schema));
             Requires.InRange
@@ -83,6 +92,8 @@ namespace CAD.DomainModel.LayoutAlgorithm
             PopulationSize = populationSize;
             ParentSelection = parentSelection;
             Selection = selection;
+            RunAsynchronously = runAsynchronously;
+            CancellationToken = cancellationToken;
         }
     }
 }

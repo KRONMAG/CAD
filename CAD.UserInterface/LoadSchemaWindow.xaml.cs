@@ -3,13 +3,14 @@ using System.Windows;
 using Microsoft.Win32;
 using CAD.Presentation.Views;
 using CAD.Presentation.Views.EventArgs;
+using CAD.Presentation.Common;
 
 namespace CAD.UserInterface
 {
     /// <summary>
     /// Главное окно программы
     /// </summary>
-    public partial class MainWindow : BaseWindow, IMainView
+    public partial class LoadSchemaWindow : BaseWindow, ILoadSchemaView
     {
         /// <summary>
         /// Событие запроса загрузки схемы соединений из файла
@@ -19,8 +20,13 @@ namespace CAD.UserInterface
         /// <summary>
         /// Инициализация окна
         /// </summary>
-        public MainWindow() =>
+        public LoadSchemaWindow() =>
             InitializeComponent();
+
+        void IView.Show()
+        {
+            ShowDialog();
+        }
 
         /// <summary>
         /// Обработчик события нажатия кнопки обзора файлов

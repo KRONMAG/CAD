@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using CodeContracts;
 
 namespace CAD.DomainModel.LayoutAlgorithm
@@ -13,14 +12,13 @@ namespace CAD.DomainModel.LayoutAlgorithm
     public class GeneticAlgorithm
     {
         /// <summary>
-        /// Источник токена отмены асинхронного выполнения алгоритма
-        /// </summary>
-        private CancellationTokenSource _cancellationTokenSource;
-
-        /// <summary>
         /// События окончания генерации очередного поколения популяции
         /// </summary>
-        public EventHandler<GeneticAlgorithmResult> GenerationCompleted;
+        public EventHandler<GeneticAlgorithmResult> IterationCompleted;
+
+        public EventHandler<GeneticAlgorithmResult> LayoutCompleted;
+
+        public EventHandler<GeneticAlgorithmResult> LayoutCanceled;
 
         /// <summary>
         /// Генерация начальной популяции
@@ -312,73 +310,66 @@ namespace CAD.DomainModel.LayoutAlgorithm
         }
 
         /// <summary>
-        /// Выполнение генетического алгоритма
+        /// Выполнение генетического алгоритма компоновки
         /// </summary>
         /// <param name="args">Параметры генетического алгоритма</param>
         /// <returns>Данные о популяции особей последнего поколения/returns>
-        public GeneticAlgorithmResult Run(GeneticAlgorithmArgs args)
+        public Task<GeneticAlgorithmResult> Run(GeneticAlgorithmArgs args)
         {
             Requires.NotNull(args, nameof(args));
 
-            var population = InitialPopulation(args);
-            var fitness = population.ToDictionary(individual => individual, individual => Fitness(args, individual));
-
-            for (var i = 0; i < args.GenerationsCount; i++)
+            GeneticAlgorithmResult Layout()
             {
-                var pairs = args.ParentSelection switch
+                var population = InitialPopulation(args);
+                var fitness = population.ToDictionary(individual => individual, individual => Fitness(args, individual));
+                GeneticAlgorithmResult result = null;
+
+                for (var i = 0; i < args.GenerationsCount; i++)
                 {
-                    ParentSelectionType.Panmixia => Panmixia(population),
-                    ParentSelectionType.Outbreeding => Outbreeding(population),
-                    ParentSelectionType.Inbreeding => Inbreeding(population)
-                };
+                    var pairs = args.ParentSelection switch
+                    {
+                        ParentSelectionType.Panmixia => Panmixia(population),
+                        ParentSelectionType.Outbreeding => Outbreeding(population),
+                        ParentSelectionType.Inbreeding => Inbreeding(population)
+                    };
 
-                var offsprings = Crossover(pairs);
+                    var offsprings = Crossover(pairs);
 
-                population = population.Union(offsprings).ToArray();
+                    population = population.Union(offsprings).ToArray();
 
-                foreach (var offspring in offsprings)
-                    fitness.Add(offspring, Fitness(args, offspring));
+                    foreach (var offspring in offsprings)
+                        fitness.Add(offspring, Fitness(args, offspring));
 
-                population = args.Selection switch
-                {
-                    SelectionType.Elitism => Elitism(population, fitness),
-                    SelectionType.Tournament => Tournament(population, fitness)
-                };
+                    population = args.Selection switch
+                    {
+                        SelectionType.Elitism => Elitism(population, fitness),
+                        SelectionType.Tournament => Tournament(population, fitness)
+                    };
 
-                fitness = fitness
-                    .Where(pair => population.Contains(pair.Key))
-                    .ToDictionary(pair => pair.Key, pair => pair.Value);
+                    fitness = fitness
+                        .Where(pair => population.Contains(pair.Key))
+                        .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-                var result = new GeneticAlgorithmResult(args.Schema, i + 1, population, fitness);
-                GenerationCompleted?.Invoke(this, result);
-                if (_cancellationTokenSource != null &&
-                    _cancellationTokenSource.IsCancellationRequested)
-                    return result;
+                    result = new GeneticAlgorithmResult(args.Schema, i + 1, population, fitness);
+
+                    IterationCompleted?.Invoke(this, result);
+
+                    if (args.CancellationToken.HasValue &&
+                        args.CancellationToken.Value.IsCancellationRequested)
+                    {
+                        LayoutCanceled?.Invoke(this, result);
+                        return result;
+                    }
+                }
+
+                LayoutCompleted?.Invoke(this, result);
+
+                return result;
             }
-
-            return new GeneticAlgorithmResult(args.Schema, args.GenerationsCount, population, fitness);
+            if (args.RunAsynchronously)
+                return Task.Run(() => Layout());
+            else
+                return Task.FromResult(Layout());
         }
-
-        /// <summary>
-        /// Асинхронное выполнение генетического алгоритма
-        /// </summary>
-        /// <param name="args">Параметры генетического алгоритма</param>
-        /// <returns>
-        /// Если работа алгоритма не прервана, возвращаются данные о популяции последнего поколения,
-        /// иначе возвращаются данные о популяции, сформированной до останова алгоритма
-        /// </returns>
-        public Task<GeneticAlgorithmResult> RunAsync(GeneticAlgorithmArgs args)
-        {
-            _cancellationTokenSource = new CancellationTokenSource();
-            var result = Task.Run(() => Run(args));
-            _cancellationTokenSource = null;
-            return result;
-        }
-
-        /// <summary>
-        /// Остановка работы генетического алгоритма
-        /// </summary>
-        public void StopAsync() =>
-            _cancellationTokenSource?.Cancel();
     }
 }

@@ -7,9 +7,6 @@ namespace CAD.Presentation.Common
     /// </summary>
     public interface IView
     {
-        /// <summary>
-        /// Событие закрытия представления пользователем или программным путем
-        /// </summary>
         event EventHandler Closed;
 
         /// <summary>

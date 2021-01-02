@@ -5,9 +5,9 @@ using CAD.Presentation.Views.EventArgs;
 namespace CAD.Presentation.Views
 {
     /// <summary>
-    /// Представление главного меню программы
+    /// Представление загрузки схемы соединений
     /// </summary>
-    public interface IMainView : IView
+    public interface ILoadSchemaView : IView
     {
         /// <summary>
         /// Событие запроса загрузки схемы соединений из файла
