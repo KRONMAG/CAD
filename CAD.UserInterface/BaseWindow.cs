@@ -53,13 +53,24 @@ namespace CAD.UserInterface
         /// </summary>
         /// <param name="title">Заголовок сообщения</param>
         /// <param name="message">Текст сообщения</param>
-        public void MessageDialog(string title, string message)
+        public void ShowMessageDialog(string title, string message)
         {
             Requires.NotNullOrEmpty(title, nameof(title));
             Requires.NotNullOrEmpty(message, nameof(message));
 
-            Dispatcher.Invoke(() =>
-                DialogManager.ShowMessageAsync(this, title, message));
+            Dispatcher.Invoke
+            (
+                () => DialogManager.ShowMessageAsync
+                (
+                    this,
+                    title,
+                    message,
+                    settings: new MetroDialogSettings
+                    {
+                        DialogMessageFontSize = 14
+                    }
+                )
+            );
         }
     }
 }

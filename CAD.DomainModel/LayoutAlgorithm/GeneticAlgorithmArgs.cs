@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using CodeContracts;
 
 namespace CAD.DomainModel.LayoutAlgorithm
@@ -38,8 +39,14 @@ namespace CAD.DomainModel.LayoutAlgorithm
         /// </summary>
         public SelectionType Selection { get; }
 
+        /// <summary>
+        /// Следует ли алгоритм выполнять асинхронно
+        /// </summary>
         public bool RunAsynchronously { get; }
 
+        /// <summary>
+        /// Токен отмены выполнения генетического алгоритма
+        /// </summary>
         public CancellationToken? CancellationToken { get; }
 
         /// <summary>
@@ -83,7 +90,7 @@ namespace CAD.DomainModel.LayoutAlgorithm
             (
                 nodesCount <= schema.Elements.Count,
                 nameof(nodesCount),
-                "Количество узлов должно быть не больше числа элементов схемы"
+                "Количество узлов не может превышать количество элементов схемы"
             );
 
             Schema = schema;

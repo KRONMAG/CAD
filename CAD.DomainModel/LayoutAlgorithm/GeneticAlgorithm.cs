@@ -12,13 +12,19 @@ namespace CAD.DomainModel.LayoutAlgorithm
     public class GeneticAlgorithm
     {
         /// <summary>
-        /// События окончания генерации очередного поколения популяции
+        /// Событие окончания генерации популяции нового поколения
         /// </summary>
         public EventHandler<GeneticAlgorithmResult> IterationCompleted;
 
-        public EventHandler<GeneticAlgorithmResult> LayoutCompleted;
-
+        /// <summary>
+        /// Событие, возникающее при остановки работы алгоритма компоновки
+        /// </summary>
         public EventHandler<GeneticAlgorithmResult> LayoutCanceled;
+
+        /// <summary>
+        /// Событие окончания работы алгоритма компоновки
+        /// </summary>
+        public EventHandler<GeneticAlgorithmResult> LayoutCompleted;
 
         /// <summary>
         /// Генерация начальной популяции
@@ -286,8 +292,8 @@ namespace CAD.DomainModel.LayoutAlgorithm
         /// Количество отбираемых особей - половина размера популяции, округленная
         /// до целого в меньшую сторону
         /// </summary>
-        /// <param name="population"></param>
-        /// <param name="fitness"></param>
+        /// <param name="population">Популяция особей</param>
+        /// <param name="fitness">Значения приспособленности особей</param>
         /// <returns>Оособи, прошедшие отбор</returns>
         private int[][] Tournament(int[][] population, Dictionary<int[], int> fitness)
         {
@@ -310,10 +316,10 @@ namespace CAD.DomainModel.LayoutAlgorithm
         }
 
         /// <summary>
-        /// Выполнение генетического алгоритма компоновки
+        /// Запуск генетического алгоритма компоновки
         /// </summary>
         /// <param name="args">Параметры генетического алгоритма</param>
-        /// <returns>Данные о популяции особей последнего поколения/returns>
+        /// <returns>Данные о популяции особей последнего поколения</returns>
         public Task<GeneticAlgorithmResult> Run(GeneticAlgorithmArgs args)
         {
             Requires.NotNull(args, nameof(args));
@@ -350,7 +356,13 @@ namespace CAD.DomainModel.LayoutAlgorithm
                         .Where(pair => population.Contains(pair.Key))
                         .ToDictionary(pair => pair.Key, pair => pair.Value);
 
-                    result = new GeneticAlgorithmResult(args.Schema, i + 1, population, fitness);
+                    result = new GeneticAlgorithmResult
+                    (
+                        args.Schema,
+                        i + 1,
+                        population.OrderBy(individual => fitness[individual]).First(),
+                        fitness.Values.ToArray()
+                    );
 
                     IterationCompleted?.Invoke(this, result);
 

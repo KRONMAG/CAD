@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System.Linq;
+using System.Collections.Generic;
 using CodeContracts;
-using QuickGraph;
 using CAD.DomainModel.Schema;
 
 namespace CAD.DomainModel.Graph
@@ -8,15 +8,12 @@ namespace CAD.DomainModel.Graph
     /// <summary>
     /// Взвешенный граф схемы
     /// </summary>
-    public class WeightedSchemaGraph : BidirectionalGraph<Vertex, Edge>
+    public class WeightedSchemaGraph
     {
         /// <summary>
-        /// Создание пустого графа
+        /// Ребра взвешенного графа схемы
         /// </summary>
-        public WeightedSchemaGraph()
-        { 
-        
-        }
+        public IList<Edge> Edges { get; }
 
         /// <summary>
         /// Создание графа на основе схемы соединений
@@ -26,47 +23,31 @@ namespace CAD.DomainModel.Graph
         {
             Requires.NotNull(schema, nameof(schema));
 
-            var edges = new List<Edge>();
-            var vertices = new Dictionary<string, Vertex>();
-
-            void AddVertex(Element element)
-            {
-                if (!vertices.ContainsKey(element.Name))
-                    vertices.Add
-                    (
-                        element.Name,
-                        new Vertex(element.Name)
-                        {
-                            GroupId = element.NodeId
-                        }
-                    );
-            }
-
+            var edges = new Dictionary<(Element, Element), Edge>();
             var matrixOfConnections = schema.MatrixOfConnections;
+            var chains = schema.Chains;
 
-            for (var i = 0; i < matrixOfConnections.RowLabels.Count; i++)
-                for (var j = 0; j < i; j++)
-                {
-                    var rowLabel = matrixOfConnections.RowLabels[i];
-                    var columnLabel = matrixOfConnections.ColumnLabels[j];
-                    var connectionsCount = matrixOfConnections[rowLabel, columnLabel];
-                    if (connectionsCount > 0)
+            foreach (var chain in chains)
+                for (var i = 0; i < chain.Elements.Count; i++)
+                    for (var j = i + 1; j < chain.Elements.Count; j++)
                     {
-                        AddVertex(rowLabel);
-                        AddVertex(columnLabel);
-                        edges.Add
-                        (
-                            new Edge
+                        var firstElement = chain.Elements[i];
+                        var secondElement = chain.Elements[j];
+                        if (!edges.ContainsKey((firstElement, secondElement)) &&
+                            !edges.ContainsKey((secondElement, firstElement)))
+                            edges.Add
                             (
-                                vertices[rowLabel.Name],
-                                vertices[columnLabel.Name],
-                                connectionsCount
-                            )
-                        );
+                                (firstElement, secondElement),
+                                new Edge
+                                (
+                                    firstElement,
+                                    secondElement,
+                                    matrixOfConnections[firstElement, secondElement]
+                                )
+                            );
                     }
-                }
 
-            base.AddVerticesAndEdgeRange(edges);
+            Edges = edges.Values.ToList().AsReadOnly();
         }
     }
 }

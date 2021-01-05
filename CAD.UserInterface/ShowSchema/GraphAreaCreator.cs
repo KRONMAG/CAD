@@ -1,20 +1,20 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Media;
-using QuickGraph;
 using GraphX.Common.Interfaces;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using GraphX.Logic.Algorithms.LayoutAlgorithms.Grouped;
 using GraphX.Logic.Models;
-using CAD.DomainModel;
+using GraphX.Controls;
+using QuickGraph;
 using CAD.DomainModel.Graph;
 
-namespace CAD.UserInterface
+namespace CAD.UserInterface.ShowSchema
 {
     /// <summary>
-    /// Средство настройки отображения графа в элементе управления WeightedSchemaGraphArea
+    /// Средство настройки отображения графа в элементе управления GraphArea
     /// </summary>
-    public static class WeightedSchemaGraphAreaCreator
+    public static class GraphAreaCreator
     {
         /// <summary>
         /// Создание элемента управления для отображения графа
@@ -22,15 +22,18 @@ namespace CAD.UserInterface
         /// </summary>
         /// <param name="graph">Взвешенный граф схемы</param>
         /// <returns>Элемент управления с размещенным в нем графом</returns>
-        public static WeightedSchemaGraphArea Create(WeightedSchemaGraph graph)
+        public static GraphArea<Vertex, Edge, BidirectionalGraph<Vertex, Edge>> Create(WeightedSchemaGraph graph)
         {
-            var logicCore = new GXLogicCore<Vertex, Edge, WeightedSchemaGraph>(graph);
+            var logicCore = new GXLogicCore<Vertex, Edge, BidirectionalGraph<Vertex, Edge>>
+            (
+                CreateInternalGraph(graph)
+            );
 
             logicCore.AsyncAlgorithmCompute = true;
 
             ConfigureExternalLayoutAlgorithm(logicCore);
 
-            var graphArea = new WeightedSchemaGraphArea();
+            var graphArea = new GraphArea<Vertex, Edge, BidirectionalGraph<Vertex, Edge>>();
 
             graphArea.LogicCore = logicCore;
             graphArea.ShowAllEdgesArrows(false);
@@ -43,17 +46,59 @@ namespace CAD.UserInterface
         }
 
         /// <summary>
+        /// Создание внутреннего представления графа
+        /// для отображения взвешенного графа схемы
+        /// </summary>
+        /// <param name="graph">Взвешенный граф схемы</param>
+        /// <returns>Предсталвение взвешенного графа схемы для отображеняи</returns>
+        private static BidirectionalGraph<Vertex, Edge> CreateInternalGraph(WeightedSchemaGraph graph)
+        {
+            var internalGraph = new BidirectionalGraph<Vertex, Edge>();
+
+            var vertices = graph.Edges
+                .SelectMany(edge => new[]
+                {
+                    edge.FirstElement,
+                    edge.SecondElement
+                })
+                .Distinct()
+                .ToDictionary
+                (
+                    element => element,
+                    element => new Vertex(element.Name, element.NodeId)
+                );
+
+            internalGraph.AddVerticesAndEdgeRange
+            (
+                graph.Edges.Select
+                (
+                    edge => new Edge
+                    (
+                        vertices[edge.FirstElement],
+                        vertices[edge.SecondElement],
+                        edge.CommonChainsCount
+                    )
+                )
+            );
+
+            return internalGraph;
+        }
+
+        /// <summary>
         /// Настройка алгоритма компоновки вершин графа
         /// </summary>
         /// <param name="logicCore">Логика отображения графа</param>
-        private static void ConfigureExternalLayoutAlgorithm(GXLogicCore<Vertex, Edge, WeightedSchemaGraph> logicCore)
+        private static void ConfigureExternalLayoutAlgorithm
+            (GXLogicCore<Vertex, Edge, BidirectionalGraph<Vertex, Edge>> logicCore)
         {
             var graph = logicCore.Graph;
             var groupsCount = graph.Vertices
                 .Select(vertex => vertex.GroupId)
                 .Distinct()
                 .Count();
-            logicCore.ExternalLayoutAlgorithm = new GroupingLayoutAlgorithm<Vertex, Edge, BidirectionalGraph<Vertex, Edge>>
+
+            logicCore.ExternalLayoutAlgorithm = new GroupingLayoutAlgorithm
+                <Vertex, Edge, BidirectionalGraph<Vertex, Edge>>
             (
                 graph,
                 null,
@@ -64,7 +109,7 @@ namespace CAD.UserInterface
                         .Select(group => group.ToList())
                         .Select(vertices =>
                         {
-                            var groupGraph = new WeightedSchemaGraph();
+                            var groupGraph = new BidirectionalGraph<Vertex, Edge>();
                             groupGraph.AddVertexRange(vertices);
                             groupGraph.AddEdgeRange
                             (
@@ -78,15 +123,29 @@ namespace CAD.UserInterface
                         .Select(groupGraph => new AlgorithmGroupParameters<Vertex, Edge>()
                         {
                             GroupId = groupGraph.Vertices.First().GroupId,
-                            LayoutAlgorithm = (groupsCount > 1 ?
-                                new KKLayoutAlgorithm<Vertex, Edge, WeightedSchemaGraph>(groupGraph, new KKLayoutParameters()) :
-                                (IExternalLayout<Vertex, Edge>)new CircularLayoutAlgorithm<Vertex, Edge, WeightedSchemaGraph>
+                            LayoutAlgorithm = groupsCount > 1
+                                ?
+                                new KKLayoutAlgorithm
+                                <Vertex, Edge, BidirectionalGraph<Vertex, Edge>>
+                                (groupGraph, new KKLayoutParameters())
+                                :
+                                (IExternalLayout<Vertex, Edge>)
+                                new CircularLayoutAlgorithm
+                                <Vertex, Edge, BidirectionalGraph<Vertex, Edge>>
                                 (
                                     groupGraph,
-                                    groupGraph.Vertices.ToDictionary(vertex => vertex, vertex => new GraphX.Measure.Point()),
-                                    groupGraph.Vertices.ToDictionary(vertex => vertex, vertex => new GraphX.Measure.Size(50, 50)),
+                                    groupGraph.Vertices.ToDictionary
+                                    (
+                                        vertex => vertex,
+                                        vertex => new GraphX.Measure.Point()
+                                    ),
+                                    groupGraph.Vertices.ToDictionary
+                                    (
+                                        vertex => vertex,
+                                        vertex => new GraphX.Measure.Size(50, 50)
+                                    ),
                                     new CircularLayoutParameters()
-                                ))
+                                )
                         })
                         .ToList()
                 )
@@ -94,14 +153,15 @@ namespace CAD.UserInterface
                     OverlapRemovalAlgorithm = logicCore.AlgorithmFactory.CreateFSAA<object>(50, 50),
                     ArrangeGroups = true
                 }
-            );;
+            ); ;
         }
 
         /// <summary>
         /// Настройка внешнего вида вершин графа
         /// </summary>
         /// <param name="graphArea">Элемент управления для отображения графа</param>
-        private static void ConfigureVertexControls(WeightedSchemaGraphArea graphArea)
+        private static void ConfigureVertexControls
+            (GraphArea<Vertex, Edge, BidirectionalGraph<Vertex, Edge>> graphArea)
         {
             graphArea.GenerateGraph();
 
@@ -146,7 +206,8 @@ namespace CAD.UserInterface
         /// Настройка внешнего вида ребер графа
         /// </summary>
         /// <param name="graphArea">Элемент управления для отображения графа</param>
-        private static void ConfigureEdgeControls(WeightedSchemaGraphArea graphArea)
+        private static void ConfigureEdgeControls
+            (GraphArea<Vertex, Edge, BidirectionalGraph<Vertex, Edge>> graphArea)
         {
             graphArea.GenerateAllEdges();
 

@@ -1,5 +1,5 @@
 ﻿<local:BaseWindow
-    x:Class="CAD.UserInterface.ShowSchemaWindow"
+    x:Class="CAD.UserInterface.ShowSchema.ShowSchemaWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:graphx="http://schemas.panthernet.ru/graphx/"
@@ -84,7 +84,10 @@
                         HorizontalAlignment="Center"
                         Columns="2">
                         <Button Click="GoToLayoutElementsViewClick" Content="Выполнить компоновку" />
-                        <Button Margin="10,0,0,0" Content="Сохранить результаты компоновки" />
+                        <Button
+                            Margin="10,0,0,0"
+                            Click="SaveElementsDistributionClick"
+                            Content="Сохранить данные компоновки" />
                     </UniformGrid>
                 </Grid>
             </TabItem>

@@ -16,6 +16,9 @@ namespace CAD.Presentation.Common
         /// </summary>
         private readonly UnityContainer _container;
 
+        /// <summary>
+        /// Подписчики и подписки на события
+        /// </summary>
         private readonly Dictionary<object, List<object>> _subscribers;
 
         /// <summary>
@@ -102,72 +105,52 @@ namespace CAD.Presentation.Common
             _container.Resolve<T>().Run(parameter);
         }
 
-        #region EventBus
-
-        private void Subscribe(object subscriber, object @event)
+        /// <summary>
+        /// Подписка объекта на событие
+        /// </summary>
+        /// <param name="subscriber">Объект, подписчик на событие</param>
+        /// <param name="event">
+        /// Событие, на которое необходимо подписаться, содержащее обоработчик
+        /// </param>
+        public void Subscribe<T, U>(object subscriber, T @event) where T: class, IEvent<U>
         {
+            Requires.NotNull(subscriber, nameof(subscriber));
+            Requires.NotNull(@event, nameof(@event));
+
             if (!_subscribers.ContainsKey(subscriber))
                 _subscribers.Add(subscriber, new List<object>());
 
             _subscribers[subscriber].Add(@event);
         }
 
-        public void Subscribe<T, U>(IPresenter subscriber, T @event)
-            where T : class, IPresenterEvent<U>
-        {
-            Requires.NotNull(subscriber, nameof(subscriber));
-            Requires.NotNull(@event, nameof(@event));
-
-            Subscribe(subscriber, @event);
-        }
-
-        public void Subscribe<T, U, V>(IPresenter<V> subscriber, T @event)
-            where T : class, IPresenterEvent<U>
-        {
-            Requires.NotNull(subscriber, nameof(subscriber));
-            Requires.NotNull(@event, nameof(@event));
-
-            Subscribe(subscriber, @event);
-        }
-
-        public void Unsubscribe(IPresenter subscriber)
+        /// <summary>
+        /// Отписка объкта от всех событий
+        /// </summary>
+        /// <param name="subscriber">Объект</param>
+        public void Unsubscribe(object subscriber)
         {
             Requires.NotNull(subscriber, nameof(subscriber));
 
             _subscribers.Remove(subscriber);
         }
 
-        public void Unsubscribe<T>(IPresenter<T> subscriber)
+        /// <summary>
+        /// Генерация события заданного типа: вызов всех его обработчиков
+        /// с передачей в них параметра события
+        /// </summary>
+        /// <typeparam name="T">Тип события</typeparam>
+        /// <typeparam name="U">Тип параметров события</typeparam>
+        /// <param name="sender">Источник события</param>
+        /// <param name="args">Параметры события</param>
+        public void RaiseEvent<T, U>(object sender, U args) where T: class, IEvent<U>
         {
-            Requires.NotNull(subscriber, nameof(subscriber));
+            Requires.NotNull(sender, nameof(sender));
 
-            _subscribers.Remove(subscriber);
-        }
-
-        private void RaiseEvent<T, U>(object sender, U args)
-            where T: class, IPresenterEvent<U> =>
             _subscribers.Values
                 .SelectMany(handlers => handlers)
                 .OfType<T>()
                 .ToList()
                 .ForEach(handler => handler.Handler.BeginInvoke(sender, args, null, null));
-
-        public void RaiseEvent<T, U>(IPresenter sender, U args)
-            where T: class, IPresenterEvent<U>
-        {
-            Requires.NotNull(sender, nameof(sender));
-
-            RaiseEvent<T, U>((object)sender, args);
         }
-
-        public void RaiseEvent<T, U, V>(IPresenter<V> sender, U args)
-            where T: class, IPresenterEvent<U>
-        {
-            Requires.NotNull(sender, nameof(sender));
-
-            RaiseEvent<T, U>(sender, args);
-        }
-
-        #endregion
     }
 }

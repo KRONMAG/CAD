@@ -3,10 +3,13 @@
 namespace CAD.Presentation.Common
 {
     /// <summary>
-    /// Описание общего функционала для всех представления
+    /// Описание общего функционала для всех представлений
     /// </summary>
     public interface IView
     {
+        /// <summary>
+        /// Событие закрытия представления, программно или пользователем
+        /// </summary>
         event EventHandler Closed;
 
         /// <summary>
@@ -35,6 +38,6 @@ namespace CAD.Presentation.Common
         /// </summary>
         /// <param name="title">Заголовок сообщения</param>
         /// <param name="message">Текст сообщения</param>
-        void MessageDialog(string title, string message);
+        void ShowMessageDialog(string title, string message);
     }
 }

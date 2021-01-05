@@ -38,6 +38,9 @@ namespace CAD.Presentation.Common
         public virtual void Run() =>
             view.Show();
 
+        /// <summary>
+        /// Отписка представителя от событий
+        /// </summary>
         ~BasePresenter() =>
             controller.Unsubscribe(this);
     }
@@ -89,6 +92,9 @@ namespace CAD.Presentation.Common
             view.Show();
         }
 
+        /// <summary>
+        /// Отписка представителя от событий
+        /// </summary>
         ~BasePresenter() =>
             controller.Unsubscribe(this);
     }

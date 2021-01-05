@@ -207,24 +207,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataGrid2DCreator.cs" />
-    <Compile Include="LoadSchemaWindow.xaml.cs">
+    <Compile Include="ShowSchema\DataGrid2DCreator.cs" />
+    <Compile Include="ShowSchema\Edge.cs" />
+    <Compile Include="LoadSchema\LoadSchemaWindow.xaml.cs">
       <DependentUpon>LoadSchemaWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PlotModelCreator.cs" />
+    <Compile Include="LayoutElements\PlotModelCreator.cs" />
     <Compile Include="Properties\Resources.Designer.cs" />
-    <Compile Include="LayoutAlgorithmWindow.xaml.cs">
-      <DependentUpon>LayoutAlgorithmWindow.xaml</DependentUpon>
+    <Compile Include="LayoutElements\LayoutElementsWindow.xaml.cs">
+      <DependentUpon>LayoutElementsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ShowSchemaWindow.xaml.cs">
+    <Compile Include="ShowSchema\ShowSchemaWindow.xaml.cs">
       <DependentUpon>ShowSchemaWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ShowSchema\Vertex.cs" />
     <Compile Include="WaitingAnimationWindow.xaml.cs">
       <DependentUpon>WaitingAnimationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WeightedSchemaGraphArea.cs" />
-    <Compile Include="WeightedSchemaGraphAreaCreator.cs" />
-    <Page Include="LoadSchemaWindow.xaml">
+    <Compile Include="ShowSchema\GraphAreaCreator.cs" />
+    <Page Include="LoadSchema\LoadSchemaWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -233,11 +234,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="BaseWindow.cs" />
-    <Page Include="LayoutAlgorithmWindow.xaml">
+    <Page Include="LayoutElements\LayoutElementsWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ShowSchemaWindow.xaml">
+    <Page Include="ShowSchema\ShowSchemaWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

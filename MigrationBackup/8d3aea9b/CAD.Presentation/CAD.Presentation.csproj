@@ -34,56 +34,58 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeContracts, Version=1.0.5680.18392, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeContracts.1.0.5680.18392\lib\net40\CodeContracts.dll</HintPath>
+    </Reference>
     <Reference Include="GraphX.Standard.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="QuickGraph, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Abstractions, Version=5.11.6.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.7\lib\net47\Unity.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Container, Version=5.11.8.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.5.11.7\lib\net47\Unity.Container.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ApplicationController.cs" />
     <Compile Include="Common\BasePresenter.cs" />
     <Compile Include="Common\IPresenter.cs" />
     <Compile Include="Common\IView.cs" />
-    <Compile Include="Common\IEvent.cs" />
-    <Compile Include="Presenters\Events\LayoutResultAcceptedEvent.cs" />
-    <Compile Include="Presenters\LayoutElementsPresenter.cs" />
+    <Compile Include="Common\IPresenterEvent.cs" />
+    <Compile Include="Presenters\LayoutAlgoritmPresenter.cs" />
     <Compile Include="Presenters\LoadSchemaPresenter.cs" />
-    <Compile Include="Presenters\Events\SchemaLoadedEvent.cs" />
+    <Compile Include="Presenters\SchemaLoadedEvent.cs" />
     <Compile Include="Presenters\ShowSchemaPresenter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\EventArgs\RunLayoutAlgorithmEventArgs.cs" />
     <Compile Include="Views\EventArgs\LoadSchemaEventArgs.cs" />
-    <Compile Include="Views\EventArgs\SaveElementsDistributionEventArgs.cs" />
-    <Compile Include="Views\ILayoutElementsView.cs" />
+    <Compile Include="Views\ILayoutAlgorithmView.cs" />
     <Compile Include="Views\ILoadSchemaView.cs" />
     <Compile Include="Views\IShowSchemaView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CAD.DomainModel\CAD.DomainModel.csproj">
       <Project>{bb3b1f1e-066b-4ff7-812b-20f2c9dbe62d}</Project>
       <Name>CAD.DomainModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="CodeContracts">
-      <Version>1.0.5680.18392</Version>
-    </PackageReference>
-    <PackageReference Include="CsvHelper">
-      <Version>19.0.0</Version>
-    </PackageReference>
-    <PackageReference Include="System.ValueTuple">
-      <Version>4.5.0</Version>
-    </PackageReference>
-    <PackageReference Include="Unity">
-      <Version>5.11.7</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

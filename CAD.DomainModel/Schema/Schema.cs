@@ -9,7 +9,14 @@ namespace CAD.DomainModel.Schema
     /// </summary>
     public class Schema
     {
+        /// <summary>
+        /// Матрица комплексов
+        /// </summary>
         private LabeledMatrix<Element, Chain, int> _matrixOfComplexes;
+
+        /// <summary>
+        /// Матрица соединений
+        /// </summary>
         private LabeledMatrix<Element, Element, int> _matrixOfConnections;
 
         /// <summary>
@@ -109,6 +116,11 @@ namespace CAD.DomainModel.Schema
         public Schema(IReadOnlyList<Chain> chains)
         {
             Requires.NullOrWithNoNullElements(chains, nameof(chains));
+            Requires.True
+            (
+                chains.Count > 0,
+                "Схема должна содержать не менее одной цепи"
+            );
             Requires.True
             (
                 chains.Distinct().Count() == chains.Count,

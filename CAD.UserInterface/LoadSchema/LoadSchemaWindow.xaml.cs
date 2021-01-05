@@ -1,31 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using Microsoft.Win32;
 using CAD.Presentation.Views;
 using CAD.Presentation.Views.EventArgs;
 using CAD.Presentation.Common;
+using CAD.DomainModel.Schema;
 
-namespace CAD.UserInterface
+namespace CAD.UserInterface.LoadSchema
 {
     /// <summary>
-    /// Главное окно программы
+    /// Окно загрузки схемы соединений из файла
     /// </summary>
     public partial class LoadSchemaWindow : BaseWindow, ILoadSchemaView
     {
         /// <summary>
-        /// Событие запроса загрузки схемы соединений из файла
+        /// Элементы списка выбора формата схемы соединений
         /// </summary>
-        public event EventHandler<LoadSchemaEventArgs> LoadSchema;
+        private Dictionary<string, SchemaFormat> _schemaFormats;
 
         /// <summary>
         /// Инициализация окна
         /// </summary>
-        public LoadSchemaWindow() =>
+        public LoadSchemaWindow()
+        {
             InitializeComponent();
 
-        void IView.Show()
-        {
-            ShowDialog();
+            _schemaFormats = new Dictionary<string, SchemaFormat>
+            {
+                ["Allegro"] = SchemaFormat.Allegro,
+                ["Calay"] = SchemaFormat.Calay
+            };
+
+            SchemaFormatComboBox.ItemsSource = _schemaFormats.Keys;
         }
 
         /// <summary>
@@ -50,7 +57,29 @@ namespace CAD.UserInterface
             LoadSchema?.Invoke
             (
                 this,
-                new LoadSchemaEventArgs(SchemaFilePathTextBox.Text, E0PrefixTextBox.Text)
+                new LoadSchemaEventArgs
+                (
+                    SchemaFilePathTextBox.Text,
+                    E0PrefixTextBox.Text,
+                    _schemaFormats[(string)SchemaFormatComboBox.SelectedItem]
+                )
             );
+
+        #region ILoadSchemaView
+
+        /// <summary>
+        /// Событие запроса загрузки схемы соединений из файла
+        /// </summary>
+        public event EventHandler<LoadSchemaEventArgs> LoadSchema;
+
+        /// <summary>
+        /// Отображение окна как диалогового
+        /// </summary>
+        void IView.Show()
+        {
+            ShowDialog();
+        }
+
+        #endregion
     }
 }

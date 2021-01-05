@@ -1,4 +1,5 @@
 ﻿using CodeContracts;
+using CAD.DomainModel.Schema;
 
 namespace CAD.Presentation.Views.EventArgs
 {
@@ -18,17 +19,24 @@ namespace CAD.Presentation.Views.EventArgs
         public string E0Prefix { get; }
 
         /// <summary>
+        /// Формат текстового описания схемы
+        /// </summary>
+        public SchemaFormat Format { get; }
+
+        /// <summary>
         /// Создание экземпляра класса
         /// </summary>
         /// <param name="schemaFilePath">Путь к файлу с описанием схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
-        public LoadSchemaEventArgs(string schemaFilePath, string e0Prefix)
+        /// <param name="format">Формат текстового описани схемы</param>
+        public LoadSchemaEventArgs(string schemaFilePath, string e0Prefix, SchemaFormat format)
         {
             Requires.NotNull(schemaFilePath, nameof(schemaFilePath));
             Requires.NotNull(e0Prefix, nameof(e0Prefix));
 
             SchemaFilePath = schemaFilePath;
             E0Prefix = e0Prefix;
+            Format = format;
         }
     }
 }

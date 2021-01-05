@@ -1,15 +1,15 @@
 ﻿using CodeContracts;
 using GraphX.Common.Models;
 
-namespace CAD.DomainModel.Graph
+namespace CAD.UserInterface.ShowSchema
 {
     /// <summary>
-    /// Вершина взвешенного графа схемы
+    /// Вершина графа
     /// </summary>
     public class Vertex : VertexBase
     {
         /// <summary>
-        /// Метка вершины
+        /// Наименование элемента схемы
         /// </summary>
         public string Label { get; }
 
@@ -17,13 +17,18 @@ namespace CAD.DomainModel.Graph
         /// Создание вершины
         /// </summary>
         /// <param name="label">Метка вершины</param>
-        public Vertex(string label)
+        /// <param name="groupId">Номер группы, в которой расположена вершина</param
+        internal Vertex(string label, int groupId)
         {
             Requires.NotNull(label, nameof(label));
-            Requires.NotNullOrEmpty(label, nameof(label), "Метка вершины не может быть пустой");
+            Requires.True
+            (
+                !string.IsNullOrWhiteSpace(label),
+                "Метка вершины не может быть пустой"
+            );
 
             base.ID = label.GetHashCode();
-            base.GroupId = 1;
+            base.GroupId = groupId;
 
             Label = label;
         }

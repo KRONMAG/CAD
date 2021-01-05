@@ -6,7 +6,7 @@ using System.Windows.Markup;
 using Gu.Wpf.DataGrid2D;
 using CAD.DomainModel.Schema;
 
-namespace CAD.UserInterface
+namespace CAD.UserInterface.ShowSchema
 {
     /// <summary>
     /// Средство отображения матриц в элементе управления DataGrid

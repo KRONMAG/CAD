@@ -2,6 +2,9 @@
 using CAD.Presentation.Common;
 using CAD.Presentation.Presenters;
 using CAD.Presentation.Views;
+using CAD.UserInterface.LayoutElements;
+using CAD.UserInterface.LoadSchema;
+using CAD.UserInterface.ShowSchema;
 
 namespace CAD.UserInterface
 {
@@ -18,7 +21,7 @@ namespace CAD.UserInterface
             new ApplicationController()
                 .RegisterSingleton<IShowSchemaView, ShowSchemaWindow>()
                 .Register<ILoadSchemaView, LoadSchemaWindow>()
-                .Register<ILayoutAlgorithmView, LayoutAlgorithmWindow>()
+                .Register<ILayoutElementsView, LayoutElementsWindow>()
                 .Run<ShowSchemaPresenter>();
         }
     }

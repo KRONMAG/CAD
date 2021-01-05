@@ -4,6 +4,7 @@ using CAD.DomainModel.Schema;
 using CAD.Presentation.Common;
 using CAD.Presentation.Views;
 using CAD.Presentation.Views.EventArgs;
+using CAD.Presentation.Presenters.Events;
 
 namespace CAD.Presentation.Presenters
 {
@@ -32,22 +33,40 @@ namespace CAD.Presentation.Presenters
             Requires.NotNull(args, nameof(args));
 
             if (string.IsNullOrWhiteSpace(args.SchemaFilePath))
-                view.MessageDialog("Ошибка", "Не указан путь к файлу со списком соединений");
+                view.ShowMessageDialog("Ошибка", "Не указан путь к файлу со списком соединений");
             else if (!File.Exists(args.SchemaFilePath))
-                view.MessageDialog("Ошибка", "Не найден файл списка соединений по указанному пути");
+                view.ShowMessageDialog("Ошибка", "Не найден файл списка соединений по указанному пути");
             else if (string.IsNullOrWhiteSpace(args.E0Prefix))
-                view.MessageDialog("Ошибка", "Не задан префикс элемента e0");
+                view.ShowMessageDialog("Ошибка", "Не задан префикс элемента e0");
             else
             {
-                Schema schema = null;
-
                 try
                 {
-                    schema = new SchemaParser().Parse(File.ReadAllLines(args.SchemaFilePath), args.E0Prefix);
+                    var schemaWasParsed = SchemaParser.TryParse
+                    (
+                        File.ReadAllLines(args.SchemaFilePath),
+                        args.E0Prefix,
+                        args.Format,
+                        out Schema schema
+                    );
+
+                    if (schemaWasParsed)
+                    {
+                        controller.RaiseEvent<SchemaLoadedEvent, Schema>(this, schema);
+                        view.Close();
+                    }
+                    else
+                    {
+                        view.ShowMessageDialog
+                        (
+                            "Ошибка",
+                            "Указанная схема соединений не содержит цепей с разными элементами"
+                        );
+                    }
                 }
                 catch
                 {
-                    view.MessageDialog
+                    view.ShowMessageDialog
                     (
                         "Ошибка",
                         "Не удалось разобрать содержимое указанного файла списка соединений"
@@ -56,12 +75,6 @@ namespace CAD.Presentation.Presenters
                 finally
                 {
                     view.StopAnimation();
-                }
-
-                if (schema != null)
-                {
-                    controller.RaiseEvent<SchemaLoadedEvent, Schema>(this, schema);
-                    view.Close();
                 }
             }
         }

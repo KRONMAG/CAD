@@ -34,6 +34,9 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CodeContracts, Version=1.0.5680.18392, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CodeContracts.1.0.5680.18392\lib\net40\CodeContracts.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,14 +58,12 @@
     <Compile Include="Schema\Element.cs" />
     <Compile Include="Schema\LabeledMatrix.cs" />
     <Compile Include="Schema\Schema.cs" />
-    <Compile Include="Schema\SchemaFormat.cs" />
     <Compile Include="Schema\SchemaParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="CodeContracts">
-      <Version>1.0.5680.18392</Version>
-    </PackageReference>
+    <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,29 +8,39 @@ namespace CAD.DomainModel.Schema
     /// <summary>
     /// Парсер схем соединений
     /// </summary>
-    public class SchemaParser
+    public static class SchemaParser
     {
         /// <summary>
-        /// Разбор текстового описания схемы соединений
+        /// Попытка разбора текстового описания схемы
         /// </summary>
         /// <param name="lines">Текстовое описание схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
-        /// <returns>Прочитанная схема соединений</returns>
-        public Schema Parse(IReadOnlyList<string> lines, string e0Prefix)
+        /// <param name="format">Формат описания схемы соединений</param>
+        /// <param name="schema">Прочитанная схема соединений или null, если схема оказалась пустой</param>
+        /// <returns>Истина, если схема содержит хотя бы одну цепь, иначе - ложь</returns>
+        public static bool TryParse(IReadOnlyList<string> lines, string e0Prefix, SchemaFormat format, out Schema schema)
         {
             Requires.NullOrWithNoNullElements(lines, nameof(lines));
             Requires.NotNull(e0Prefix, nameof(e0Prefix));
             Requires.True(lines.Count > 0, "Описание схемы не может быть пустым");
-            Requires.True(!string.IsNullOrWhiteSpace(e0Prefix), "Префикс элемента e0 не может быть пустым");
+            Requires.True
+            (
+                !string.IsNullOrWhiteSpace(e0Prefix),
+                "Префикс элемента e0 не может быть пустым"
+            );
 
             lines = lines
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Select(line => line.Trim('\t', ' '))
                 .ToList();
 
-            if (lines.Any(line => line == "$NETS"))
-                return ParseAllegro(lines, e0Prefix);
-            return ParseCalay(lines, e0Prefix);
+            schema = format switch
+            {
+                SchemaFormat.Allegro => TryParseAllegro(lines, e0Prefix),
+                SchemaFormat.Calay => TryParseCalay(lines, e0Prefix)
+            };
+
+            return schema != null;
         }
 
         /// <summary>
@@ -38,8 +48,8 @@ namespace CAD.DomainModel.Schema
         /// </summary>
         /// <param name="lines">Текстовое описание схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
-        /// <returns>Схема соединений</returns>
-        private Schema ParseAllegro(IReadOnlyList<string> lines, string e0Prefix)
+        /// <returns>Схема соединений или null, если схема оказалась пустой</returns>
+        private static Schema TryParseAllegro(IReadOnlyList<string> lines, string e0Prefix)
         {
             var chains = new List<Chain>();
             lines = lines
@@ -74,16 +84,19 @@ namespace CAD.DomainModel.Schema
                 index++;
             }
 
+            if (chains.Count == 0)
+                return null;
+
             return new Schema(chains);
         }
 
         /// <summary>
-        /// Парсинг схемы соединений, представленной в формтае Calay
+        /// Парсинг схемы соединений, представленной в формате Calay
         /// </summary>
         /// <param name="lines">Текстовое описание схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
-        /// <returns>Схема соединений</returns>
-        private Schema ParseCalay(IReadOnlyList<string> lines, string e0Prefix)
+        /// <returns>Схема соединений или null, если схема оказалась пустой</returns>
+        private static Schema TryParseCalay(IReadOnlyList<string> lines, string e0Prefix)
         {
             var chains = new List<Chain>();
             var index = 0;
@@ -113,6 +126,9 @@ namespace CAD.DomainModel.Schema
                 }
                 index++;
             }
+
+            if (chains.Count == 0)
+                return null;
             return new Schema(chains);
         }
     }
