@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using Microsoft.Win32;
 using GraphX.Controls;
+using Gu.Wpf.DataGrid2D;
 using CAD.DomainModel.Schema;
 using CAD.Presentation.Views;
 using CAD.DomainModel.Graph;
-using Microsoft.Win32;
 using CAD.Presentation.Views.EventArgs;
 
 namespace CAD.UserInterface.ShowSchema
@@ -89,7 +91,11 @@ namespace CAD.UserInterface.ShowSchema
         /// <param name="matrix">Матрица комплесков схемы</param>
         public void ShowMatrixOfComplexes(LabeledMatrix<Element, Chain, int> matrix) =>
             Dispatcher.Invoke(() =>
-                MatrixOfComplexesContentControl.Content = DataGrid2DCreator.Create(matrix));
+            {
+                MatrixOfComplexesDataGrid.SetRowHeadersSource(matrix.RowLabels);
+                MatrixOfComplexesDataGrid.SetColumnHeadersSource(matrix.ColumnLabels);
+                MatrixOfComplexesDataGrid.SetArray2D(matrix);
+            });
 
         /// <summary>
         /// Отображение матрицы соединений схемы
@@ -97,7 +103,11 @@ namespace CAD.UserInterface.ShowSchema
         /// <param name="matrix">Матрица соединений схемы</param>
         public void ShowMatrixOfConnections(LabeledMatrix<Element, Element, int> matrix) =>
             Dispatcher.Invoke(() =>
-                MatrixOfConnectionsContentControl.Content = DataGrid2DCreator.Create(matrix));
+            {
+                MatrixOfConnectionsDataGrid.SetRowHeadersSource(matrix.RowLabels);
+                MatrixOfConnectionsDataGrid.SetColumnHeadersSource(matrix.ColumnLabels);
+                MatrixOfConnectionsDataGrid.SetArray2D(matrix);
+            });
 
         /// <summary>
         /// Отображение взвешенного графа схемы
@@ -122,9 +132,8 @@ namespace CAD.UserInterface.ShowSchema
         /// заголовки строк матрицы - элементы схемы,
         /// заголовок столбца - номер узла, в котором расположен элемент
         /// </param>
-        public void ShowElementsDistribution(LabeledMatrix<Element, string, int> matrix) =>
-            Dispatcher.Invoke(() =>
-                ElementsDistributionGroupBox.Content = DataGrid2DCreator.Create(matrix));
+        public void ShowElementsDistribution(IReadOnlyList<Element> elements) =>
+            Dispatcher.Invoke(() => ElementsDistributionDataGrid.ItemsSource = elements);
 
         /// <summary>
         /// Отображение количества межузловых соединений

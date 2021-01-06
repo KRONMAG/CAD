@@ -18,7 +18,7 @@ namespace CAD.DomainModel.Schema
         /// <param name="format">Формат описания схемы соединений</param>
         /// <param name="schema">Прочитанная схема соединений или null, если схема оказалась пустой</param>
         /// <returns>Истина, если схема содержит хотя бы одну цепь, иначе - ложь</returns>
-        public static bool TryParse(IReadOnlyList<string> lines, string e0Prefix, SchemaFormat format, out Schema schema)
+        public static bool TryParse(IReadOnlyList<string> lines, SchemaFormat format, string e0Prefix, out Schema schema)
         {
             Requires.NullOrWithNoNullElements(lines, nameof(lines));
             Requires.NotNull(e0Prefix, nameof(e0Prefix));

@@ -30,8 +30,10 @@ namespace CAD.UserInterface.LayoutElements
             var plotModel = new PlotModel();
 
             plotModel.LegendBackground = OxyColors.White;
+            plotModel.LegendBorder = OxyColors.Black;
             plotModel.LegendBorderThickness = 1;
             plotModel.LegendMargin = 0;
+            plotModel.LegendPosition = LegendPosition.BottomLeft;
 
             plotModel.Axes.Add
             (

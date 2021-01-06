@@ -29,7 +29,7 @@ namespace CAD.DomainModel.Graph
         /// <param name="firstElement">Элемент схемы - первая вершина, инцидентная ребру</param>
         /// <param name="secondElement">Элемент схемы - вторая вершна, инцидентная ребру/param>
         /// <param name="commonChainsCount">Количество общих цепей элементов</param>
-        internal Edge(Element firstElement, Element secondElement, int commonChainsCount)
+        public Edge(Element firstElement, Element secondElement, int commonChainsCount)
         {
             Requires.NotNull(firstElement, nameof(firstElement));
             Requires.NotNull(secondElement, nameof(secondElement));

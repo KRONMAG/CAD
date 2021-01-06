@@ -69,6 +69,7 @@ namespace CAD.Presentation.Presenters
             else
             {
                 _isLayoutAlgorithmRunning = true;
+
                 var cancellationTokenSource = new CancellationTokenSource();
                 var algorithmArgs = new GeneticAlgorithmArgs
                 (
@@ -124,8 +125,11 @@ namespace CAD.Presentation.Presenters
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e">Параметры события</param>
-        private void AcceptAlgorithmResult(object sender, EventArgs e)
+        private void AcceptAlgorithmResult(object sender, EventArgs args)
         {
+            Requires.NotNull(sender, nameof(sender));
+            Requires.NotNull(args, nameof(args));
+
             if (_isLayoutAlgorithmRunning)
                 view.ShowMessageDialog
                 (
@@ -148,9 +152,9 @@ namespace CAD.Presentation.Presenters
                         element => element.NodeId = _result.BestDistribution[element]
                     );
 
-                controller.RaiseEvent<LayoutResultAcceptedEvent, Schema>(this, parameter);
-
                 view.Close();
+
+                controller.RaiseEvent<LayoutResultAcceptedEvent, Schema>(this, parameter);
             }
         }
 

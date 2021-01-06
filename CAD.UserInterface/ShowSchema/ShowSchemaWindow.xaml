@@ -1,13 +1,13 @@
-﻿<local:BaseWindow
+﻿<userInterface:BaseWindow
     x:Class="CAD.UserInterface.ShowSchema.ShowSchemaWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:graphx="http://schemas.panthernet.ru/graphx/"
     xmlns:hamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
     xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:CAD.UserInterface"
     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
-    Title="Проектирующая подстистема печатных плат"
+    xmlns:userInterface="clr-namespace:CAD.UserInterface"
+    Title="Проектирующая подсистема печатных плат"
     WindowState="Maximized">
     <Grid>
         <Grid.ColumnDefinitions>
@@ -27,13 +27,13 @@
                 PreviewMouseLeftButtonUp="GoToLoadSchemaViewClick"
                 Text="Загрузка схемы соединений" />
         </hamburgerMenu:HamburgerMenu>
-        <mahapps:MetroTabControl
+        <TabControl
             Grid.Column="1"
             Margin="5,0,0,0"
             mahapps:HeaderedControlHelper.HeaderFontSize="16"
             mahapps:TabControlHelper.Underlined="SelectedTabItem">
             <TabItem Header="Список соединений">
-                <ScrollViewer Margin="5">
+                <ScrollViewer>
                     <TextBox
                         x:Name="SchemaFileTextTextBox"
                         HorizontalAlignment="Stretch"
@@ -44,10 +44,16 @@
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Матрица комплексов">
-                <ContentControl x:Name="MatrixOfComplexesContentControl" Margin="0,5,5,5" />
+                <DataGrid
+                    x:Name="MatrixOfComplexesDataGrid"
+                    HeadersVisibility="All"
+                    IsReadOnly="True" />
             </TabItem>
             <TabItem Header="Матрица соединений">
-                <ContentControl x:Name="MatrixOfConnectionsContentControl" Margin="0,5,5,5" />
+                <DataGrid
+                    x:Name="MatrixOfConnectionsDataGrid"
+                    HeadersVisibility="All"
+                    IsReadOnly="True" />
             </TabItem>
             <TabItem Header="Компоновка элементов">
                 <Grid>
@@ -60,10 +66,7 @@
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <GroupBox
-                        x:Name="WeightedSchemaGraphGroupBox"
-                        Margin="0,5,5,5"
-                        Header="Взвешенный граф схемы">
+                    <GroupBox x:Name="WeightedSchemaGraphGroupBox" Header="Взвешенный граф схемы">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
@@ -73,14 +76,23 @@
                         </Grid>
                     </GroupBox>
                     <GroupBox
-                        x:Name="ElementsDistributionGroupBox"
                         Grid.Column="1"
-                        Margin="0,5,5,5"
-                        Header="Распределение элементов по узлам" />
+                        Margin="5,0,0,0"
+                        Header="Распределение элементов по узлам">
+                        <DataGrid
+                            x:Name="ElementsDistributionDataGrid"
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Name}" Header="Элемент" />
+                                <DataGridTextColumn Binding="{Binding NodeId}" Header="Номер узла" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
                     <UniformGrid
                         Grid.Row="2"
                         Grid.ColumnSpan="2"
-                        Margin="0,0,0,5"
+                        Margin="0,5"
                         HorizontalAlignment="Center"
                         Columns="2">
                         <Button Click="GoToLayoutElementsViewClick" Content="Выполнить компоновку" />
@@ -91,6 +103,6 @@
                     </UniformGrid>
                 </Grid>
             </TabItem>
-        </mahapps:MetroTabControl>
+        </TabControl>
     </Grid>
-</local:BaseWindow>
+</userInterface:BaseWindow>

@@ -72,26 +72,6 @@ namespace CAD.DomainModel.Schema
         }
 
         /// <summary>
-        /// Распределение элементов схемы по узлам
-        /// </summary>
-        public LabeledMatrix<Element, string, int> ElementsDistribution
-        {
-            get
-            {
-                const string columnLabel = "Номер узла";
-                var distribution = new LabeledMatrix<Element, string, int>
-                (
-                    Elements,
-                    new[] { columnLabel }
-                );
-                Elements
-                    .ToList()
-                    .ForEach(element => distribution[element, columnLabel] = element.NodeId);
-                return distribution;
-            }
-        }
-
-        /// <summary>
         /// Количество межузловых соединений
         /// </summary>
         public int InternodeConnectionsCount

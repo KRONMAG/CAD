@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Windows;
-using System.Collections.Generic;
+using System.Windows.Controls;
 using OxyPlot;
+using OxyPlot.Wpf;
 using CAD.DomainModel.LayoutAlgorithm;
 using CAD.Presentation.Views;
 using CAD.Presentation.Views.EventArgs;
-using OxyPlot.Wpf;
 using LineSeries = OxyPlot.Series.LineSeries;
 
 namespace CAD.UserInterface.LayoutElements
@@ -15,16 +15,6 @@ namespace CAD.UserInterface.LayoutElements
     /// </summary>
     public partial class LayoutElementsWindow : BaseWindow, ILayoutElementsView
     {
-        /// <summary>
-        /// Элементы списка выбора типа оператора формирования родительских пар
-        /// </summary>
-        private Dictionary<string, ParentSelectionType> _parentSelections;
-
-        /// <summary>
-        /// Элементы списка выбора типа оператора селекции
-        /// </summary>
-        private Dictionary<string, SelectionType> _selections;
-
         /// <summary>
         /// Элемент управления для отображения результата выполнения компоновки
         /// </summary>
@@ -58,19 +48,6 @@ namespace CAD.UserInterface.LayoutElements
                 out _maxSeries
             );
             LayoutResultsContentControl.Content = _plotView;
-            _parentSelections = new Dictionary<string, ParentSelectionType>
-            {
-                ["Аутбридинг"] = ParentSelectionType.Outbreeding,
-                ["Инбридинг"] = ParentSelectionType.Inbreeding,
-                ["Панмиксия"] = ParentSelectionType.Panmixia
-            };
-            _selections = new Dictionary<string, SelectionType>
-            {
-                ["Турнирная селекция"] = SelectionType.Tournament,
-                ["Элитарная селекция"] = SelectionType.Elitism
-            };
-            ParentSelectionComboBox.ItemsSource = _parentSelections.Keys;
-            SelectionComboBox.ItemsSource = _selections.Keys;
         }
 
         /// <summary>
@@ -87,8 +64,8 @@ namespace CAD.UserInterface.LayoutElements
                     (int)(NodesCountNumericUpDown.Value ?? 2),
                     (int)(GenerationsCountNumericUpDown.Value ?? 500),
                     (int)(PopulationSizeNumericUpDown.Value ?? 20),
-                    _parentSelections[(string)ParentSelectionComboBox.SelectedItem],
-                    _selections[(string)SelectionComboBox.SelectedItem]
+                    (ParentSelectionType)((ComboBoxItem)ParentSelectionComboBox.SelectedItem).Tag,
+                    (SelectionType)((ComboBoxItem)SelectionComboBox.SelectedItem).Tag
                 )
             );
 
@@ -158,15 +135,9 @@ namespace CAD.UserInterface.LayoutElements
                 );
                 _plotView.InvalidatePlot();
 
-                var item = new[]
-                {
-                    result.GenerationNumber,
-                    result.MinInternodeConnectionsCount,
-                    result.AvgInternodeConnectionsCount,
-                    result.MaxInternodeConnectionsCount
-                };
-                LayoutResultsDataGrid.Items.Add(item);
-                LayoutResultsDataGrid.ScrollIntoView(item);
+                LayoutResultsDataGrid.Items.Add(result);
+                if (LayoutResultsDataGrid.IsVisible)
+                    LayoutResultsDataGrid.ScrollIntoView(result);
             });
 
         /// <summary>

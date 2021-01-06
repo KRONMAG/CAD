@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using Microsoft.Win32;
 using CAD.Presentation.Views;
 using CAD.Presentation.Views.EventArgs;
@@ -15,25 +15,10 @@ namespace CAD.UserInterface.LoadSchema
     public partial class LoadSchemaWindow : BaseWindow, ILoadSchemaView
     {
         /// <summary>
-        /// Элементы списка выбора формата схемы соединений
-        /// </summary>
-        private Dictionary<string, SchemaFormat> _schemaFormats;
-
-        /// <summary>
         /// Инициализация окна
         /// </summary>
-        public LoadSchemaWindow()
-        {
+        public LoadSchemaWindow() =>
             InitializeComponent();
-
-            _schemaFormats = new Dictionary<string, SchemaFormat>
-            {
-                ["Allegro"] = SchemaFormat.Allegro,
-                ["Calay"] = SchemaFormat.Calay
-            };
-
-            SchemaFormatComboBox.ItemsSource = _schemaFormats.Keys;
-        }
 
         /// <summary>
         /// Обработчик события нажатия кнопки обзора файлов
@@ -60,8 +45,8 @@ namespace CAD.UserInterface.LoadSchema
                 new LoadSchemaEventArgs
                 (
                     SchemaFilePathTextBox.Text,
-                    E0PrefixTextBox.Text,
-                    _schemaFormats[(string)SchemaFormatComboBox.SelectedItem]
+                    (SchemaFormat)((ComboBoxItem)SchemaFormatComboBox.SelectedItem).Tag,
+                    E0PrefixTextBox.Text
                 )
             );
 

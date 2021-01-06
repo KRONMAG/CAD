@@ -45,8 +45,8 @@ namespace CAD.Presentation.Presenters
                     var schemaWasParsed = SchemaParser.TryParse
                     (
                         File.ReadAllLines(args.SchemaFilePath),
-                        args.E0Prefix,
                         args.Format,
+                        args.E0Prefix,
                         out Schema schema
                     );
 

@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using CodeContracts;
 using CsvHelper;
@@ -8,9 +12,6 @@ using CAD.DomainModel.Schema;
 using CAD.DomainModel.Graph;
 using CAD.Presentation.Presenters.Events;
 using CAD.Presentation.Views.EventArgs;
-using System.IO;
-using System.Text;
-using System.Globalization;
 
 namespace CAD.Presentation.Presenters
 {
@@ -55,7 +56,7 @@ namespace CAD.Presentation.Presenters
         /// 3) матрицу комплексов
         /// 4) взвешенный граф схемы
         /// 5) распределение элементов по узлам
-        /// 6) количество межзловых соединений
+        /// 6) количество межузловых соединений
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="schema">Загруженная схема соединений</param>
@@ -70,7 +71,7 @@ namespace CAD.Presentation.Presenters
                 view.ShowMatrixOfComplexes(schema.MatrixOfComplexes);
                 view.ShowMatrixOfConnections(schema.MatrixOfConnections);
                 view.ShowWeightedSchemaGraph(new WeightedSchemaGraph(schema));
-                view.ShowElementsDistribution(schema.ElementsDistribution);
+                view.ShowElementsDistribution(schema.Elements.OrderBy(element => element.NodeId).ToList());
                 view.ShowInternodeConnectionsCount(schema.InternodeConnectionsCount);
                 view.StopAnimation();
             });
@@ -91,7 +92,7 @@ namespace CAD.Presentation.Presenters
                 {
                     view.StartAnimation("Обновление схемы соединений");
                     view.ShowWeightedSchemaGraph(new WeightedSchemaGraph(schema));
-                    view.ShowElementsDistribution(schema.ElementsDistribution);
+                    view.ShowElementsDistribution(schema.Elements.OrderBy(element => element.NodeId).ToList());
                     view.ShowInternodeConnectionsCount(schema.InternodeConnectionsCount);
                     view.StopAnimation();
                 });
@@ -122,9 +123,66 @@ namespace CAD.Presentation.Presenters
                 controller.Run<LayoutElementsPresenter, Schema>(_schema);
         }
 
+        /// <summary>
+        /// Обработчик события запроса сохранения данных компоновки
+        /// </summary>
+        /// <param name="sender">Источник события</param>
+        /// <param name="args">Параметры события</param>
         private void SaveElementsDistribution(object sender, SaveElementsDistributionEventArgs args)
         {
+            Requires.NotNull(sender, nameof(sender));
+            Requires.NotNull(args, nameof(args));
 
+            if (_schema == null)
+                view.ShowMessageDialog
+                (
+                    "Ошибка",
+                    "Сохранение данных компоновки невозможно: загрузите схему соединений"
+                );
+            else if (string.IsNullOrWhiteSpace(args.FilePath))
+                view.ShowMessageDialog
+                (
+                    "Ошибка",
+                    "Путь сохраненения данных компоновки не может быть пустым"
+                );
+            else
+            {
+                Task.Run(() =>
+                {
+                    view.StartAnimation("Сохранение данных компоновки");
+                    try
+                    {
+                        using (var streamWriter = new StreamWriter(args.FilePath, false, Encoding.UTF8))
+                        using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
+                        {
+
+                            csvWriter.Configuration.Delimiter = ";";
+                            csvWriter.Configuration.HasHeaderRecord = false;
+                            csvWriter.WriteField("Элемент");
+                            csvWriter.WriteField("Номер узла");
+                            csvWriter.NextRecord();
+                            csvWriter.WriteRecords(_schema.Elements.OrderBy(element => element.NodeId));
+                        }
+                        view.ShowMessageDialog
+                        (
+                            "Успех",
+                            "Данные компоновки успешно записаны в CSV-файл"
+                        );
+                    }
+                    catch
+                    {
+                        view.ShowMessageDialog
+                        (
+                            "Ошибка",
+                            "В ходе сохранения данных компоновки возникла ошибка"
+                        );
+                    }
+                    finally
+                    {
+                        view.StopAnimation();
+                    }
+                });
+            }
         }
     }
 }

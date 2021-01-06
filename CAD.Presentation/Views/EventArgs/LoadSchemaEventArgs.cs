@@ -29,14 +29,14 @@ namespace CAD.Presentation.Views.EventArgs
         /// <param name="schemaFilePath">Путь к файлу с описанием схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
         /// <param name="format">Формат текстового описани схемы</param>
-        public LoadSchemaEventArgs(string schemaFilePath, string e0Prefix, SchemaFormat format)
+        public LoadSchemaEventArgs(string schemaFilePath, SchemaFormat format, string e0Prefix)
         {
             Requires.NotNull(schemaFilePath, nameof(schemaFilePath));
             Requires.NotNull(e0Prefix, nameof(e0Prefix));
 
             SchemaFilePath = schemaFilePath;
-            E0Prefix = e0Prefix;
             Format = format;
+            E0Prefix = e0Prefix;
         }
     }
 }

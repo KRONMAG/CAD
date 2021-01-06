@@ -50,7 +50,7 @@ namespace CAD.UserInterface.ShowSchema
         /// для отображения взвешенного графа схемы
         /// </summary>
         /// <param name="graph">Взвешенный граф схемы</param>
-        /// <returns>Предсталвение взвешенного графа схемы для отображеняи</returns>
+        /// <returns>Представление взвешенного графа схемы для отображеняи</returns>
         private static BidirectionalGraph<Vertex, Edge> CreateInternalGraph(WeightedSchemaGraph graph)
         {
             var internalGraph = new BidirectionalGraph<Vertex, Edge>();

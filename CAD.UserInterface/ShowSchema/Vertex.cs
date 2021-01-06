@@ -9,7 +9,7 @@ namespace CAD.UserInterface.ShowSchema
     public class Vertex : VertexBase
     {
         /// <summary>
-        /// Наименование элемента схемы
+        /// Метка вершины
         /// </summary>
         public string Label { get; }
 

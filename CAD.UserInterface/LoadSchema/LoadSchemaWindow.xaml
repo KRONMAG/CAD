@@ -1,9 +1,10 @@
-﻿<local:BaseWindow
+﻿<userInterface:BaseWindow
     x:Class="CAD.UserInterface.LoadSchema.LoadSchemaWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:CAD.UserInterface"
     xmlns:mahapps="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:schema="clr-namespace:CAD.DomainModel.Schema;assembly=CAD.DomainModel"
+    xmlns:userInterface="clr-namespace:CAD.UserInterface"
     Title="Загрузка схемы соединений"
     ResizeMode="NoResize"
     SizeToContent="WidthAndHeight"
@@ -42,7 +43,18 @@
             Width="80"
             Margin="0,5,0,0"
             HorizontalAlignment="Left"
-            SelectedIndex="0" />
+            SelectedIndex="0">
+            <ComboBoxItem Content="Allegro">
+                <ComboBoxItem.Tag>
+                    <schema:SchemaFormat>Allegro</schema:SchemaFormat>
+                </ComboBoxItem.Tag>
+            </ComboBoxItem>
+            <ComboBoxItem Content="Calay">
+                <ComboBoxItem.Tag>
+                    <schema:SchemaFormat>Calay</schema:SchemaFormat>
+                </ComboBoxItem.Tag>
+            </ComboBoxItem>
+        </ComboBox>
         <Label
             Grid.Row="2"
             Margin="0,5,0,0"
@@ -64,4 +76,4 @@
             Click="LoadSchemaClick"
             Content="Загрузить" />
     </Grid>
-</local:BaseWindow>
+</userInterface:BaseWindow>

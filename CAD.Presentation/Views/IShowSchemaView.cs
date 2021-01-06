@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CAD.DomainModel.Graph;
 using CAD.DomainModel.Schema;
 using CAD.Presentation.Common;
@@ -64,6 +65,6 @@ namespace CAD.Presentation.Views
         /// заголовки строк матрицы - элементы схемы,
         /// заголовок столбца - номер узла, в котором расположен элемент
         /// </param>
-        void ShowElementsDistribution(LabeledMatrix<Element, string, int> dictribution);
+        void ShowElementsDistribution(IReadOnlyList<Element> elements);
     }
 }

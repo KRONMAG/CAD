@@ -17,7 +17,7 @@ namespace CAD.DomainModel.LayoutAlgorithm
         public EventHandler<GeneticAlgorithmResult> IterationCompleted;
 
         /// <summary>
-        /// Событие, возникающее при остановки работы алгоритма компоновки
+        /// Событие остановки работы алгоритма компоновки
         /// </summary>
         public EventHandler<GeneticAlgorithmResult> LayoutCanceled;
 
@@ -378,6 +378,7 @@ namespace CAD.DomainModel.LayoutAlgorithm
 
                 return result;
             }
+
             if (args.RunAsynchronously)
                 return Task.Run(() => Layout());
             else
