@@ -32,29 +32,6 @@
             Margin="5,0,0,0"
             mahapps:HeaderedControlHelper.HeaderFontSize="16"
             mahapps:TabControlHelper.Underlined="SelectedTabItem">
-            <TabItem Header="Список соединений">
-                <ScrollViewer>
-                    <TextBox
-                        x:Name="SchemaFileTextTextBox"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        AcceptsReturn="True"
-                        IsReadOnly="True"
-                        TextWrapping="Wrap" />
-                </ScrollViewer>
-            </TabItem>
-            <TabItem Header="Матрица комплексов">
-                <DataGrid
-                    x:Name="MatrixOfComplexesDataGrid"
-                    HeadersVisibility="All"
-                    IsReadOnly="True" />
-            </TabItem>
-            <TabItem Header="Матрица соединений">
-                <DataGrid
-                    x:Name="MatrixOfConnectionsDataGrid"
-                    HeadersVisibility="All"
-                    IsReadOnly="True" />
-            </TabItem>
             <TabItem Header="Компоновка элементов">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -102,6 +79,29 @@
                             Content="Сохранить данные компоновки" />
                     </UniformGrid>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Список соединений">
+                <ScrollViewer>
+                    <TextBox
+                        x:Name="SchemaFileTextTextBox"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        AcceptsReturn="True"
+                        IsReadOnly="True"
+                        TextWrapping="Wrap" />
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Матрица комплексов">
+                <DataGrid
+                    x:Name="MatrixOfComplexesDataGrid"
+                    HeadersVisibility="All"
+                    IsReadOnly="True" />
+            </TabItem>
+            <TabItem Header="Матрица соединений">
+                <DataGrid
+                    x:Name="MatrixOfConnectionsDataGrid"
+                    HeadersVisibility="All"
+                    IsReadOnly="True" />
             </TabItem>
         </TabControl>
     </Grid>

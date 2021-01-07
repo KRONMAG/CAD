@@ -14,14 +14,14 @@ namespace CAD.Presentation.Views.EventArgs
         public string SchemaFilePath { get; }
 
         /// <summary>
-        /// Префикс элемента e0
-        /// </summary>
-        public string E0Prefix { get; }
-
-        /// <summary>
         /// Формат текстового описания схемы
         /// </summary>
         public SchemaFormat Format { get; }
+
+        /// <summary>
+        /// Префикс элемента e0
+        /// </summary>
+        public string E0Prefix { get; }
 
         /// <summary>
         /// Создание экземпляра класса

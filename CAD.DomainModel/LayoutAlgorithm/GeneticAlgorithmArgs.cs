@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using CodeContracts;
 
 namespace CAD.DomainModel.LayoutAlgorithm
@@ -84,7 +83,7 @@ namespace CAD.DomainModel.LayoutAlgorithm
             Requires.InRange
             (
                 populationSize >= 2,
-                "Размер популяции должен составлять не мене двух особей"
+                "Размер популяции должен составлять не менее двух особей"
             );
             Requires.True
             (

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using CodeContracts;
 using OxyPlot;
 using OxyPlot.Wpf;
 using CAD.DomainModel.LayoutAlgorithm;
@@ -106,7 +107,10 @@ namespace CAD.UserInterface.LayoutElements
         /// Отображение результата
         /// </summary>
         /// <param name="result"></param>
-        public void AddResult(GeneticAlgorithmResult result) =>
+        public void AddResult(GeneticAlgorithmResult result)
+        {
+            Requires.NotNull(result, nameof(result));
+
             Dispatcher.Invoke(() =>
             {
                 _minSeries.Points.Add
@@ -139,6 +143,7 @@ namespace CAD.UserInterface.LayoutElements
                 if (LayoutResultsDataGrid.IsVisible)
                     LayoutResultsDataGrid.ScrollIntoView(result);
             });
+        }
 
         /// <summary>
         /// Отображение окна как диалогового

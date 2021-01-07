@@ -29,7 +29,6 @@ namespace CAD.Presentation.Presenters
         /// <param name="args">Параметры события</param>
         private void LoadSchema(object sender, LoadSchemaEventArgs args)
         {
-            Requires.NotNull(sender, nameof(sender));
             Requires.NotNull(args, nameof(args));
 
             if (string.IsNullOrWhiteSpace(args.SchemaFilePath))

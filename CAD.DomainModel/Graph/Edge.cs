@@ -33,7 +33,7 @@ namespace CAD.DomainModel.Graph
         {
             Requires.NotNull(firstElement, nameof(firstElement));
             Requires.NotNull(secondElement, nameof(secondElement));
-            Requires.True(firstElement != secondElement, "Наличие петель в графе не допускается");
+            Requires.True(!firstElement.Equals(secondElement), "Наличие петель в графе не допускается");
             Requires.InRange
             (
                 commonChainsCount > 0,

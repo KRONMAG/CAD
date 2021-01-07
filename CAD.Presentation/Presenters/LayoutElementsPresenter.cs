@@ -53,7 +53,6 @@ namespace CAD.Presentation.Presenters
         /// <param name="args">Параметры события</param>
         private void RunLayoutAlgorithm(object sender, RunLayoutAlgorithmEventArgs args)
         {
-            Requires.NotNull(sender, nameof(sender));
             Requires.NotNull(args, nameof(args));
 
             if (_isLayoutAlgorithmRunning)
@@ -61,11 +60,11 @@ namespace CAD.Presentation.Presenters
             else if (args.NodesCount < 2)
                 view.ShowMessageDialog("Ошибка", "Количество узлов должно быть больше единицы");
             else if (args.NodesCount > parameter.Elements.Count)
-                view.ShowMessageDialog("Ошибка", "Количество узлов не может превышать число элементов схемы");
+                view.ShowMessageDialog("Ошибка", "Количество узлов превышает число элементов схемы");
             else if (args.GenerationsCount < 1)
-                view.ShowMessageDialog("Ошибка", "Количество поколений дожно быть больше нуля");
+                view.ShowMessageDialog("Ошибка", "Указано неположительное количество поколений");
             else if (args.PopulationSize < 2)
-                view.ShowMessageDialog("Ошибка", "Размер популяции должен быть больше единицы");
+                view.ShowMessageDialog("Ошибка", "Задан размер популяции менее двух особей");
             else
             {
                 _isLayoutAlgorithmRunning = true;
@@ -127,9 +126,6 @@ namespace CAD.Presentation.Presenters
         /// <param name="e">Параметры события</param>
         private void AcceptAlgorithmResult(object sender, EventArgs args)
         {
-            Requires.NotNull(sender, nameof(sender));
-            Requires.NotNull(args, nameof(args));
-
             if (_isLayoutAlgorithmRunning)
                 view.ShowMessageDialog
                 (
@@ -140,7 +136,7 @@ namespace CAD.Presentation.Presenters
                 view.ShowMessageDialog
                 (
                     "Ошибка",
-                    "Запустите алгоритм компоновки для получения результатов"
+                    "Запустите алгоритм компоновки для получения результата"
                 );
             else
             {

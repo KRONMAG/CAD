@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
+using CodeContracts;
 using GraphX.Controls;
 using Gu.Wpf.DataGrid2D;
 using CAD.DomainModel.Schema;
@@ -79,41 +80,56 @@ namespace CAD.UserInterface.ShowSchema
         /// Отображение текстового представления схемы
         /// </summary>
         /// <param name="text">Текстовое представление схемы</param>
-        public void ShowSchemaText(string text) =>
+        public void ShowSchemaText(string text)
+        {
+            Requires.NotNull(text, nameof(text));
+
             Dispatcher.Invoke(() =>
             {
                 SchemaFileTextTextBox.Text = text;
             });
+        }
 
         /// <summary>
         /// Отображение матрицы комплексов схемы
         /// </summary>
         /// <param name="matrix">Матрица комплесков схемы</param>
-        public void ShowMatrixOfComplexes(LabeledMatrix<Element, Chain, int> matrix) =>
+        public void ShowMatrixOfComplexes(LabeledMatrix<Element, Chain, int> matrix)
+        {
+            Requires.NotNull(matrix, nameof(matrix));
+
             Dispatcher.Invoke(() =>
             {
                 MatrixOfComplexesDataGrid.SetRowHeadersSource(matrix.RowLabels);
                 MatrixOfComplexesDataGrid.SetColumnHeadersSource(matrix.ColumnLabels);
                 MatrixOfComplexesDataGrid.SetArray2D(matrix);
             });
+        }
 
         /// <summary>
         /// Отображение матрицы соединений схемы
         /// </summary>
         /// <param name="matrix">Матрица соединений схемы</param>
-        public void ShowMatrixOfConnections(LabeledMatrix<Element, Element, int> matrix) =>
+        public void ShowMatrixOfConnections(LabeledMatrix<Element, Element, int> matrix)
+        {
+            Requires.NotNull(matrix, nameof(matrix));
+
             Dispatcher.Invoke(() =>
             {
                 MatrixOfConnectionsDataGrid.SetRowHeadersSource(matrix.RowLabels);
                 MatrixOfConnectionsDataGrid.SetColumnHeadersSource(matrix.ColumnLabels);
                 MatrixOfConnectionsDataGrid.SetArray2D(matrix);
             });
+        }
 
         /// <summary>
         /// Отображение взвешенного графа схемы
         /// </summary>
         /// <param name="graph">Взвешенный граф схемы</param>
-        public void ShowWeightedSchemaGraph(WeightedSchemaGraph graph) =>
+        public void ShowWeightedSchemaGraph(WeightedSchemaGraph graph)
+        {
+            Requires.NotNull(graph, nameof(graph));
+
             Dispatcher.Invoke(() =>
             {
                 var graphArea = GraphAreaCreator.Create(graph);
@@ -123,6 +139,7 @@ namespace CAD.UserInterface.ShowSchema
                 ZoomControl.ResetZoom.Execute(ZoomControl, graphArea);
                 ZoomControl.ZoomToFill();
             });
+        }
 
         /// <summary>
         /// Отображение распределения элементов по узлам
@@ -132,8 +149,12 @@ namespace CAD.UserInterface.ShowSchema
         /// заголовки строк матрицы - элементы схемы,
         /// заголовок столбца - номер узла, в котором расположен элемент
         /// </param>
-        public void ShowElementsDistribution(IReadOnlyList<Element> elements) =>
+        public void ShowElementsDistribution(IReadOnlyList<Element> elements)
+        {
+            Requires.NullOrWithNoNullElements(elements, nameof(elements));
+
             Dispatcher.Invoke(() => ElementsDistributionDataGrid.ItemsSource = elements);
+        }
 
         /// <summary>
         /// Отображение количества межузловых соединений

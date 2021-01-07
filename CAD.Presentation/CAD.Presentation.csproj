@@ -32,6 +32,8 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>8.0</LangVersion>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GraphX.Standard.Common, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />

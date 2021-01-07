@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Media;
+using CodeContracts;
 using GraphX.Common.Interfaces;
 using GraphX.Logic.Algorithms.LayoutAlgorithms;
 using GraphX.Logic.Algorithms.LayoutAlgorithms.Grouped;
@@ -24,6 +25,8 @@ namespace CAD.UserInterface.ShowSchema
         /// <returns>Элемент управления с размещенным в нем графом</returns>
         public static GraphArea<Vertex, Edge, BidirectionalGraph<Vertex, Edge>> Create(WeightedSchemaGraph graph)
         {
+            Requires.NotNull(graph, nameof(graph));
+
             var logicCore = new GXLogicCore<Vertex, Edge, BidirectionalGraph<Vertex, Edge>>
             (
                 CreateInternalGraph(graph)

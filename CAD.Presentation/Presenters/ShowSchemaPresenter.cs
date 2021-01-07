@@ -36,6 +36,7 @@ namespace CAD.Presentation.Presenters
             view.GoToLayoutElementsView += GoToLayoutElementsView;
             view.GoToSchemaLoadView += GoToLoadSchemaView;
             view.SaveElementsDistribution += SaveElementsDistribution;
+
             controller.Subscribe<SchemaLoadedEvent, Schema>
             (
                 this,
@@ -84,7 +85,6 @@ namespace CAD.Presentation.Presenters
         /// <param name="schema">Схема соединений со скомпонованными элементами</param>
         private void LayoutResultsAccepted(object sender, Schema schema)
         {
-            Requires.NotNull(sender, nameof(sender));
             Requires.NotNull(schema, nameof(schema));
 
             if (_schema != null && _schema == schema)
@@ -130,20 +130,19 @@ namespace CAD.Presentation.Presenters
         /// <param name="args">Параметры события</param>
         private void SaveElementsDistribution(object sender, SaveElementsDistributionEventArgs args)
         {
-            Requires.NotNull(sender, nameof(sender));
             Requires.NotNull(args, nameof(args));
 
             if (_schema == null)
                 view.ShowMessageDialog
                 (
                     "Ошибка",
-                    "Сохранение данных компоновки невозможно: загрузите схему соединений"
+                    "Сохранение данных компоновки невозможно: не загружена схема соединений"
                 );
             else if (string.IsNullOrWhiteSpace(args.FilePath))
                 view.ShowMessageDialog
                 (
                     "Ошибка",
-                    "Путь сохраненения данных компоновки не может быть пустым"
+                    "Указан пустой путь к файлу для сохранения данных компоновки"
                 );
             else
             {

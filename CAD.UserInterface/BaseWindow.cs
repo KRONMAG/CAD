@@ -27,7 +27,7 @@ namespace CAD.UserInterface
         /// <param name="message">Текст анимации ожидания</param>
         public void StartAnimation(string message)
         {
-            Requires.NotNullOrEmpty(message, nameof(message));
+            Requires.NotNull(message, nameof(message));
 
             Dispatcher.Invoke(() =>
             {
@@ -55,8 +55,8 @@ namespace CAD.UserInterface
         /// <param name="message">Текст сообщения</param>
         public void ShowMessageDialog(string title, string message)
         {
-            Requires.NotNullOrEmpty(title, nameof(title));
-            Requires.NotNullOrEmpty(message, nameof(message));
+            Requires.NotNull(title, nameof(title));
+            Requires.NotNull(message, nameof(message));
 
             Dispatcher.Invoke
             (
