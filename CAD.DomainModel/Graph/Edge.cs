@@ -27,7 +27,7 @@ namespace CAD.DomainModel.Graph
         /// Создание экземпляра класса
         /// </summary>
         /// <param name="firstElement">Элемент схемы - первая вершина, инцидентная ребру</param>
-        /// <param name="secondElement">Элемент схемы - вторая вершна, инцидентная ребру/param>
+        /// <param name="secondElement">Элемент схемы - вторая вершна, инцидентная ребру</param>
         /// <param name="commonChainsCount">Количество общих цепей элементов</param>
         public Edge(Element firstElement, Element secondElement, int commonChainsCount)
         {

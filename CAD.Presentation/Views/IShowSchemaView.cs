@@ -60,10 +60,8 @@ namespace CAD.Presentation.Views
         /// <summary>
         /// Отображение распределения элементов схемы по узлам
         /// </summary>
-        /// <param name="dictribution">
-        /// Матрица распределения элементов по узлам:
-        /// заголовки строк матрицы - элементы схемы,
-        /// заголовок столбца - номер узла, в котором расположен элемент
+        /// <param name="elements">
+        /// Элементы схемы
         /// </param>
         void ShowElementsDistribution(IReadOnlyList<Element> elements);
     }

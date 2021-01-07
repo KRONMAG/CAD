@@ -17,7 +17,7 @@ namespace CAD.UserInterface.ShowSchema
         /// Создание вершины
         /// </summary>
         /// <param name="label">Метка вершины</param>
-        /// <param name="groupId">Номер группы, в которой расположена вершина</param
+        /// <param name="groupId">Номер группы, в которой расположена вершина</param>
         internal Vertex(string label, int groupId)
         {
             Requires.NotNull(label, nameof(label));

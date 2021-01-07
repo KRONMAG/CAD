@@ -21,7 +21,7 @@ namespace CAD.Presentation.Common
         /// <summary>
         /// Создание представителя
         /// </summary>
-        /// <param name="controller">Контроллер приложения</param
+        /// <param name="controller">Контроллер приложения</param>
         /// <param name="view">Представление</param>
         public BasePresenter(ApplicationController controller, T view)
         {
@@ -71,7 +71,6 @@ namespace CAD.Presentation.Common
         /// Создание параметризованного представителя
         /// </summary>
         /// <param name="controller">Контроллер приложения</param>
-        /// <param name="navigator">Средство показа, закрытия представлений</param>
         /// <param name="view">Представление</param>
         public BasePresenter(ApplicationController controller, T view)
         {

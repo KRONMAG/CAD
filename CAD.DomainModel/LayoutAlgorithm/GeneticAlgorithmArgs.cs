@@ -72,8 +72,8 @@ namespace CAD.DomainModel.LayoutAlgorithm
             Requires.NotNull(schema, nameof(schema));
             Requires.InRange
             (
-                nodesCount > 0,
-                "Количество узлов должно быть положительным числом"
+                nodesCount > 1,
+                "Количество узлов должно быть больше единицы"
             );
             Requires.InRange
             (

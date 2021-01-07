@@ -18,6 +18,7 @@ namespace CAD.UserInterface
         /// </summary>
         public App()
         {
+            
             new ApplicationController()
                 .RegisterSingleton<IShowSchemaView, ShowSchemaWindow>()
                 .Register<ILoadSchemaView, LoadSchemaWindow>()

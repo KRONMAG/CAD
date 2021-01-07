@@ -144,10 +144,8 @@ namespace CAD.UserInterface.ShowSchema
         /// <summary>
         /// Отображение распределения элементов по узлам
         /// </summary>
-        /// <param name="matrix">
-        /// Матрица распределения элементов по узлам:
-        /// заголовки строк матрицы - элементы схемы,
-        /// заголовок столбца - номер узла, в котором расположен элемент
+        /// <param name="elements">
+        /// Элементы схемы
         /// </param>
         public void ShowElementsDistribution(IReadOnlyList<Element> elements)
         {

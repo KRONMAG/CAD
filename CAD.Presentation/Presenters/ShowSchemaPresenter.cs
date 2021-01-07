@@ -127,10 +127,10 @@ namespace CAD.Presentation.Presenters
         /// Обработчик события запроса сохранения данных компоновки
         /// </summary>
         /// <param name="sender">Источник события</param>
-        /// <param name="args">Параметры события</param>
-        private void SaveElementsDistribution(object sender, SaveElementsDistributionEventArgs args)
+        /// <param name="e">Параметры события</param>
+        private void SaveElementsDistribution(object sender, SaveElementsDistributionEventArgs e)
         {
-            Requires.NotNull(args, nameof(args));
+            Requires.NotNull(e, nameof(e));
 
             if (_schema == null)
                 view.ShowMessageDialog
@@ -138,7 +138,7 @@ namespace CAD.Presentation.Presenters
                     "Ошибка",
                     "Сохранение данных компоновки невозможно: не загружена схема соединений"
                 );
-            else if (string.IsNullOrWhiteSpace(args.FilePath))
+            else if (string.IsNullOrWhiteSpace(e.FilePath))
                 view.ShowMessageDialog
                 (
                     "Ошибка",
@@ -151,7 +151,7 @@ namespace CAD.Presentation.Presenters
                     view.StartAnimation("Сохранение данных компоновки");
                     try
                     {
-                        using (var streamWriter = new StreamWriter(args.FilePath, false, Encoding.UTF8))
+                        using (var streamWriter = new StreamWriter(e.FilePath, false, Encoding.UTF8))
                         using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
                         {
 

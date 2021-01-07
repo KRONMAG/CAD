@@ -74,6 +74,7 @@ namespace CAD.DomainModel.Schema
         /// если они равны, возвращается истина, иначе - ложь
         /// 3) если объект не является экземляром класса Element,
         /// для него вызывается метод Equals базового класса
+        /// </returns>
         public override bool Equals(object obj)
         {
             if (obj == null)

@@ -50,20 +50,20 @@ namespace CAD.Presentation.Presenters
         /// 4) окончания работы алгоритма
         /// </summary>
         /// <param name="sender">Источник события</param>
-        /// <param name="args">Параметры события</param>
-        private void RunLayoutAlgorithm(object sender, RunLayoutAlgorithmEventArgs args)
+        /// <param name="e">Параметры события</param>
+        private void RunLayoutAlgorithm(object sender, RunLayoutAlgorithmEventArgs e)
         {
-            Requires.NotNull(args, nameof(args));
+            Requires.NotNull(e, nameof(e));
 
             if (_isLayoutAlgorithmRunning)
                 view.ShowMessageDialog("Ошибка", "Алгоритм компоновки в данный момент уже запущен");
-            else if (args.NodesCount < 2)
+            else if (e.NodesCount < 2)
                 view.ShowMessageDialog("Ошибка", "Количество узлов должно быть больше единицы");
-            else if (args.NodesCount > parameter.Elements.Count)
+            else if (e.NodesCount > parameter.Elements.Count)
                 view.ShowMessageDialog("Ошибка", "Количество узлов превышает число элементов схемы");
-            else if (args.GenerationsCount < 1)
+            else if (e.GenerationsCount < 1)
                 view.ShowMessageDialog("Ошибка", "Указано неположительное количество поколений");
-            else if (args.PopulationSize < 2)
+            else if (e.PopulationSize < 2)
                 view.ShowMessageDialog("Ошибка", "Задан размер популяции менее двух особей");
             else
             {
@@ -73,11 +73,11 @@ namespace CAD.Presentation.Presenters
                 var algorithmArgs = new GeneticAlgorithmArgs
                 (
                     schema: parameter,
-                    nodesCount: args.NodesCount,
-                    generationsCount: args.GenerationsCount,
-                    populationSize: args.PopulationSize,
-                    parentSelection: args.ParentSelection,
-                    selection: args.Selection,
+                    nodesCount: e.NodesCount,
+                    generationsCount: e.GenerationsCount,
+                    populationSize: e.PopulationSize,
+                    parentSelection: e.ParentSelection,
+                    selection: e.Selection,
                     runAsynchronously: true,
                     cancellationToken: cancellationTokenSource.Token
                 );
@@ -124,7 +124,7 @@ namespace CAD.Presentation.Presenters
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e">Параметры события</param>
-        private void AcceptAlgorithmResult(object sender, EventArgs args)
+        private void AcceptAlgorithmResult(object sender, EventArgs e)
         {
             if (_isLayoutAlgorithmRunning)
                 view.ShowMessageDialog

@@ -26,16 +26,16 @@ namespace CAD.Presentation.Presenters
         /// Обработчик события запроса загрузки схемы соединений из файла
         /// </summary>
         /// <param name="sender">Объект, вызвавший событие</param>
-        /// <param name="args">Параметры события</param>
-        private void LoadSchema(object sender, LoadSchemaEventArgs args)
+        /// <param name="e">Параметры события</param>
+        private void LoadSchema(object sender, LoadSchemaEventArgs e)
         {
-            Requires.NotNull(args, nameof(args));
+            Requires.NotNull(e, nameof(e));
 
-            if (string.IsNullOrWhiteSpace(args.SchemaFilePath))
+            if (string.IsNullOrWhiteSpace(e.SchemaFilePath))
                 view.ShowMessageDialog("Ошибка", "Не указан путь к файлу со списком соединений");
-            else if (!File.Exists(args.SchemaFilePath))
+            else if (!File.Exists(e.SchemaFilePath))
                 view.ShowMessageDialog("Ошибка", "Не найден файл списка соединений по указанному пути");
-            else if (string.IsNullOrWhiteSpace(args.E0Prefix))
+            else if (string.IsNullOrWhiteSpace(e.E0Prefix))
                 view.ShowMessageDialog("Ошибка", "Не задан префикс элемента e0");
             else
             {
@@ -43,9 +43,9 @@ namespace CAD.Presentation.Presenters
                 {
                     var schemaWasParsed = SchemaParser.TryParse
                     (
-                        File.ReadAllLines(args.SchemaFilePath),
-                        args.Format,
-                        args.E0Prefix,
+                        File.ReadAllLines(e.SchemaFilePath),
+                        e.Format,
+                        e.E0Prefix,
                         out Schema schema
                     );
 
