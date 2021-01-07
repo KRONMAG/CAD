@@ -22,7 +22,8 @@ namespace CAD.Presentation.Common
         private readonly Dictionary<object, List<object>> _subscribers;
 
         /// <summary>
-        /// Создания контроллера приложения: инициализация IoC-контейнера
+        /// Создания контроллера приложения: инициализация IoC-контейнера,
+        /// инициализация словаря подписчиков и подписок на события
         /// </summary>
         public ApplicationController()
         {

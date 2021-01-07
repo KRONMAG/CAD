@@ -21,7 +21,7 @@ namespace CAD.DomainModel.LayoutAlgorithm
         public int MinInternodeConnectionsCount { get; }
 
         /// <summary>
-        /// Средняя приспособленность популяции
+        /// Средняя приспособленность особей популяции
         /// </summary>
         public double AvgInternodeConnectionsCount { get; }
 

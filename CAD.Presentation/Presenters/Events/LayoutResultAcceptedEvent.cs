@@ -1,7 +1,7 @@
 ﻿using System;
+using CodeContracts;
 using CAD.DomainModel.Schema;
 using CAD.Presentation.Common;
-using CodeContracts;
 
 namespace CAD.Presentation.Presenters.Events
 {

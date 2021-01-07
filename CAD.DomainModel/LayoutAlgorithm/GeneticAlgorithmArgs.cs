@@ -4,7 +4,7 @@ using CodeContracts;
 namespace CAD.DomainModel.LayoutAlgorithm
 {
     /// <summary>
-    /// Параметры генетического алгоритма
+    /// Параметры генетического алгоритма компоновки
     /// </summary>
     public class GeneticAlgorithmArgs
     {
@@ -19,7 +19,7 @@ namespace CAD.DomainModel.LayoutAlgorithm
         public int NodesCount { get; }
 
         /// <summary>
-        /// Количество поколений
+        /// Количество поколений потомков
         /// </summary>
         public int GenerationsCount { get; }
 

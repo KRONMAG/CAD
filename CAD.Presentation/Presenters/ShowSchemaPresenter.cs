@@ -29,7 +29,7 @@ namespace CAD.Presentation.Presenters
         /// Создание экземпляра класса
         /// </summary>
         /// <param name="controller">Контроллер приложения</param>
-        /// <param name="view">Представление</param>
+        /// <param name="view">Представление отображения схемы соединений</param>
         public ShowSchemaPresenter(ApplicationController controller, IShowSchemaView view) :
             base(controller, view)
         {
@@ -79,7 +79,11 @@ namespace CAD.Presentation.Presenters
         }
 
         /// <summary>
-        /// Обработчик события принятия результатов выполнения алгоритма компоновки
+        /// Обработчик события принятия результатов выполнения алгоритма компоновки.
+        /// Обновляет отображение:
+        /// 1) взвешенного графа схемы
+        /// 2) распределения элементов по узлам,
+        /// 3) количества межузловых соединений
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="schema">Схема соединений со скомпонованными элементами</param>
@@ -124,7 +128,9 @@ namespace CAD.Presentation.Presenters
         }
 
         /// <summary>
-        /// Обработчик события запроса сохранения данных компоновки
+        /// Обработчик события запроса сохранения данных компоновки.
+        /// Если схема загружена, записывает данные компоновки в указанный CSV-файл
+        /// со столбцами "Элемент", "Номер узла"
         /// </summary>
         /// <param name="sender">Источник события</param>
         /// <param name="e">Параметры события</param>

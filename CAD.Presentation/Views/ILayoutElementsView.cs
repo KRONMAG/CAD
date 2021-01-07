@@ -6,7 +6,7 @@ using CAD.Presentation.Views.EventArgs;
 namespace CAD.Presentation.Views
 {
     /// <summary>
-    /// Представление компоновки элементов схемы соединений в узлы
+    /// Описание представления компоновки элементов схемы соединений в узлы
     /// </summary>
     public interface ILayoutElementsView : IView
     {

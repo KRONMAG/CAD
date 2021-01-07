@@ -33,13 +33,13 @@ namespace CAD.Presentation.Common
         }
 
         /// <summary>
-        /// Запуск представителя, показ представления
+        /// Запуск представителя: показ представления
         /// </summary>
         public virtual void Run() =>
             view.Show();
 
         /// <summary>
-        /// Отписка представителя от событий
+        /// Отписка представителя от всех событий
         /// </summary>
         ~BasePresenter() =>
             controller.Unsubscribe(this);
@@ -82,7 +82,7 @@ namespace CAD.Presentation.Common
         }
 
         /// <summary>
-        /// Запуск представителя с параметром, показ представления
+        /// Запуск представителя с параметром: показ представления
         /// </summary>
         /// <param name="parameter">Параметр</param>
         public virtual void Run(U parameter)
@@ -92,7 +92,7 @@ namespace CAD.Presentation.Common
         }
 
         /// <summary>
-        /// Отписка представителя от событий
+        /// Отписка представителя от всех событий
         /// </summary>
         ~BasePresenter() =>
             controller.Unsubscribe(this);

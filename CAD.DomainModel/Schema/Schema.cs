@@ -30,7 +30,7 @@ namespace CAD.DomainModel.Schema
         public IReadOnlyList<Element> Elements { get; }
 
         /// <summary>
-        /// Получение матрицы комплексов схемы соединений
+        /// Матрица комплексов
         /// </summary>
         /// <returns>Матрица комплексов</returns>
         public LabeledMatrix<Element, Chain, int> MatrixOfComplexes
@@ -51,7 +51,7 @@ namespace CAD.DomainModel.Schema
         }
 
         /// <summary>
-        /// Матрица соединений коммутационной схемы
+        /// Матрица соединений
         /// </summary>
         public LabeledMatrix<Element, Element, int> MatrixOfConnections
         {
@@ -115,7 +115,7 @@ namespace CAD.DomainModel.Schema
         }
 
         /// <summary>
-        /// Преобразование экземпляра класса в строковое представление
+        /// Преобразование схемы соединений в строковое представление
         /// </summary>
         /// <returns>Описание схемы соединений в виде списка ее цепей и их элементов</returns>
         public override string ToString() =>

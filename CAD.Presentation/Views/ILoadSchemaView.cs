@@ -5,7 +5,7 @@ using CAD.Presentation.Views.EventArgs;
 namespace CAD.Presentation.Views
 {
     /// <summary>
-    /// Представление загрузки схемы соединений
+    /// Описание представления загрузки схемы соединений
     /// </summary>
     public interface ILoadSchemaView : IView
     {

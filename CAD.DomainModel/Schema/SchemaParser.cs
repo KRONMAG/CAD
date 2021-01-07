@@ -16,8 +16,8 @@ namespace CAD.DomainModel.Schema
         /// <param name="lines">Текстовое описание схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
         /// <param name="format">Формат описания схемы соединений</param>
-        /// <param name="schema">Прочитанная схема соединений или null, если схема оказалась пустой</param>
-        /// <returns>Истина, если схема содержит хотя бы одну цепь, иначе - ложь</returns>
+        /// <param name="schema">Прочитанная схема соединений или null, если она не содержит цепей</param>
+        /// <returns>Истина, если прочитанная схема содержит хотя бы одну цепь, иначе - ложь</returns>
         public static bool TryParse(IReadOnlyList<string> lines, SchemaFormat format, string e0Prefix, out Schema schema)
         {
             Requires.NullOrWithNoNullElements(lines, nameof(lines));
@@ -48,7 +48,7 @@ namespace CAD.DomainModel.Schema
         /// </summary>
         /// <param name="lines">Текстовое описание схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
-        /// <returns>Схема соединений или null, если схема оказалась пустой</returns>
+        /// <returns>Схема соединений или null, если схема не содержит цепей</returns>
         private static Schema TryParseAllegro(IReadOnlyList<string> lines, string e0Prefix)
         {
             var chains = new List<Chain>();
@@ -95,7 +95,7 @@ namespace CAD.DomainModel.Schema
         /// </summary>
         /// <param name="lines">Текстовое описание схемы</param>
         /// <param name="e0Prefix">Префикс элемента e0</param>
-        /// <returns>Схема соединений или null, если схема оказалась пустой</returns>
+        /// <returns>Схема соединений или null, если схема не содержит цепей</returns>
         private static Schema TryParseCalay(IReadOnlyList<string> lines, string e0Prefix)
         {
             var chains = new List<Chain>();

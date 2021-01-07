@@ -19,7 +19,7 @@ namespace CAD.DomainModel.Graph
         public Element SecondElement { get; }
 
         /// <summary>
-        /// Количестов цепей между элементами
+        /// Количество цепей между элементами
         /// </summary>
         public int CommonChainsCount { get; }
 
